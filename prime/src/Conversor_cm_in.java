@@ -10,10 +10,8 @@ public class Conversor_cm_in {
         System.out.println("Este programa convierte un valor escrito en cm a pulgadas.");
         System.out.println();
 
-        // Llamamos a la funcion Scanner
-        Scanner sc= new Scanner(System.in);
-
         // Pide el valor al usuario
+        Scanner sc= new Scanner(System.in);
         System.out.print("Introduce tu valor en cm: ");
         String userString = sc.nextLine();
 
