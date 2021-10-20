@@ -80,7 +80,23 @@ public class Control_execucio {
         // 1- Inicializacion
         // 2- Condicion
         // 3- Instruccion de incremento
-        for (int i = 0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(i);
+        }
+
+        // Break sale del bucle.
+        for (int i = 10; i > 0; i--) {
+            System.out.println(i);
+            if (i == 4) {
+                break;
+            }
+        }
+
+        // Continue reinicia el bucle saltandose las instrucciones siguientes
+        for (int i = 10; i > 0; i--) {
+            if (i == 4) {
+                continue;
+            }
             System.out.println(i);
         }
     }
