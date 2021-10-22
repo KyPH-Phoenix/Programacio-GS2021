@@ -2,7 +2,7 @@
 Este programa calcula y muestra por pantalla los primeros 40 numeros primos. 197
  */
 
-public class Exercici_5 {
+public class Exercici_5_v2 {
     public static void main(String[] args) {
         // Descripcion del programa
         System.out.println("Este programa calcula y muestra por pantalla los " +
@@ -46,3 +46,4 @@ public class Exercici_5 {
         System.out.println("La suma de estos numero es: " + sumaPrimos);
     }
 }
+
