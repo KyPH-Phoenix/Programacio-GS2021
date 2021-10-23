@@ -29,7 +29,7 @@ public class Exercici_7 {
             System.out.printf("Solo hay una solucion: %.2f\n", solucion);
         } else if (discriminante < 0) {
             System.out.println("No hay solucion");
-        } else if (discriminante == 0) {0
+        } else if (discriminante == 0) {
             double solucion = b / 2 * a;
             System.out.printf("Solo hay una solucion: %.2f\n", solucion);
         } else {
