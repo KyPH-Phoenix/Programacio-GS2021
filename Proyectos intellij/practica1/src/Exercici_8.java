@@ -47,13 +47,13 @@ public class Exercici_8 {
             case 0:
                 hora = 12;
                 break;
-            case 13,14,15,16,17,18,19,20,21,22,23,24:
+            case 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24:
                 hora = hora - 12;
                 break;
         }
 
         // Imprimimos la hora por pantalla.
-        System.out.printf("La hora es: %d:%d:%d %s", hora, minuto,segundo, sufijo);
+        System.out.printf("La hora es: %d:%d:%d %s", hora, minuto, segundo, sufijo);
 
     }
 }
