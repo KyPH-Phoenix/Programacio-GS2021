@@ -29,7 +29,8 @@ public class Exercici_1 {
         turtle.penDown = true;
     }
 
-    // Función para dibujar una fila.
+    // Función para dibujar una fila. Dibuja un cuadrado y un espacio en ciclo hasta que se cumple
+    // el numero de cuadrados
     private static void dibujaFila (int nCuadrados, int ladoCuadrado) {
         for (int i = 0; i < nCuadrados; i++) {
             cuadrado(ladoCuadrado);
@@ -70,6 +71,8 @@ public class Exercici_1 {
             dibujaFila(nCuadradosHor, longitudLado);
             goToNexRow(nCuadradosHor, longitudLado);
         }
+
+        // Mostramos el dibujo.
         turtle.show();
     }
 }
