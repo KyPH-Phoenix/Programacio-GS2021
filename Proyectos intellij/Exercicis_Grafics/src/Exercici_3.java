@@ -1,15 +1,12 @@
 /*
-Este programa dibuja el numero de cuadrados en horizontal y vertical que el usuario quiere.
+Este programa dibuja el numero de cuadrados en horizontal y vertical que el usuario quiere pero sin espacios.
  */
 
 import java.util.Scanner;
 
-public class Exercici_1 {
+public class Exercici_3 {
     // Llamamos a la función Turtle de forma global.
     static Turtle turtle = new Turtle(800, 800);
-
-    // Primero declaro todas las funciones que necesito.
-
 
     // Función para hacer un cuadrado.
     private static void cuadrado(int lado) {
@@ -19,22 +16,13 @@ public class Exercici_1 {
         }
     }
 
-    // Función para hacer un espacio entre los cuadrados.
-    private static void espacioCuadrados(int lado) {
-        turtle.penDown = false;
-        turtle.turnRight(90);
-        // Aquí indico que el espacio es la mitad del cuadrado.
-        turtle.forward((lado / 2) * 3);
-        turtle.turnLeft(90);
-        turtle.penDown = true;
-    }
-
-    // Función para dibujar una fila. Dibuja un cuadrado y un espacio en ciclo hasta que se cumple
-    // el numero de cuadrados
+    // Función para dibujar una fila. Dibuja cuadrados en ciclo hasta que se cumple el numero de cuadrados
     private static void dibujaFila(int nCuadrados, int ladoCuadrado) {
         for (int i = 0; i < nCuadrados; i++) {
             cuadrado(ladoCuadrado);
-            espacioCuadrados(ladoCuadrado);
+            turtle.turnRight(90);
+            turtle.forward(ladoCuadrado);
+            turtle.turnLeft(90);
         }
     }
 
@@ -42,9 +30,9 @@ public class Exercici_1 {
     private static void goToNexRow(int nCuadrados, int longitudCuadrado) {
         turtle.penDown = false;
         turtle.turnLeft(90);
-        turtle.forward(((longitudCuadrado / 2) * 3) * nCuadrados);
+        turtle.forward(longitudCuadrado * nCuadrados);
         turtle.turnLeft(90);
-        turtle.forward((longitudCuadrado / 2) * 3);
+        turtle.forward(longitudCuadrado);
         turtle.turnLeft(180);
         turtle.penDown = true;
     }
@@ -52,7 +40,7 @@ public class Exercici_1 {
     // Función main
     public static void main(String[] args) {
         // Descripción del programa
-        System.out.println("Este programa dibuja el numero de cuadrados en horizontal y vertical que el usuario quiere.");
+        System.out.println("Este programa dibuja el numero de cuadrados en horizontal y vertical que el usuario quiere pero sin espacios.");
         System.out.println();
 
         // Llamamos a la función escáner.
@@ -76,3 +64,4 @@ public class Exercici_1 {
         turtle.show();
     }
 }
+

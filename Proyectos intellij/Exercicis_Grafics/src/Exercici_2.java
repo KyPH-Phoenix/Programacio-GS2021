@@ -1,8 +1,14 @@
+/*
+Este programa dibuja una escalera con el numero de escalones y sus dimensiones proporcionados por el usuario.
+ */
+
 import java.util.Scanner;
 
 public class Exercici_2 {
-    static Turtle turtle=new Turtle(900, 900);
+    // Llamamos a la función Turtle de forma global.
+    static Turtle turtle = new Turtle(900, 900);
 
+    // Función para hacer un escalon descendente.
     private static void escalonAbajo(int longitudEscalon, int alturaEscalon) {
         turtle.forward(longitudEscalon);
         turtle.turnRight(90);
@@ -10,14 +16,17 @@ public class Exercici_2 {
         turtle.turnLeft(90);
     }
 
+    // Función para hacer un escalon ascendente.
     private static void escalonArriba(int longitudEscalon, int alturaEscalon) {
         turtle.turnLeft(90);
-
+        turtle.forward(alturaEscalon);
+        turtle.turnRight(90);
+        turtle.forward(longitudEscalon);
     }
 
     public static void main(String[] args) {
-        // Descripción del prigrama.
-        System.out.println();
+        // Descripción del programa.
+        System.out.println("Este programa dibuja una escalera con el numero de escalones y sus dimensiones proporcionados por el usuario.");
         System.out.println();
 
         // Llamamos a la función Scanner.
@@ -39,11 +48,15 @@ public class Exercici_2 {
             escalonAbajo(longEscalon, alturaEscalon);
         }
 
-        turtle.forward(longEscalon*2);
+        // Espacio entre escaleras.
+        turtle.forward(longEscalon * 2);
 
+        // Ciclo que dibuja los escalones ascendentes.
         for (int i = 0; i < numEscalones; i++) {
-
+            escalonArriba(longEscalon, alturaEscalon);
         }
+
+        // Muestra el dibujo.
         turtle.show();
     }
 }
