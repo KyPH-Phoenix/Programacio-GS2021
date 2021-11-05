@@ -3,6 +3,13 @@ import java.util.Scanner;
 public class Exercici_9 {
     static Turtle turtle = new Turtle(800, 800);
 
+    private static void triangulo (double hipotenusa, double anguloAlpha, int longitudLado) {
+        turtle.forward((int) hipotenusa);
+        turtle.turnRight(180 - (int) anguloAlpha);
+        turtle.forward(longitudLado);
+        turtle.turnRight(180 - (int) anguloAlpha);
+        turtle.forward((int) hipotenusa);
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -13,9 +20,15 @@ public class Exercici_9 {
 
         double anguloBeta = 360.0 / numeroTriangulos;
         double anguloAlpha = (180.0 - anguloBeta) / 2.0;
-        anguloAlpha = (anguloAlpha * Math.PI) / 180.0;
-        int ladoRestante = longitudLado;
 
-        
+        // Scamos la hipotenusa con la formula: Hipotenus = (Lado / 2) / cos(Alpha)
+        double hipotenusa = (longitudLado / 2.0) / Math.cos((anguloAlpha * Math.PI) / 180);
+
+        for (int i = 0; i < numeroTriangulos; i++) {
+            turtle.resetAngle();
+            turtle.turnRight(((int) anguloBeta * i)- ((int) anguloBeta / 2));
+            triangulo(hipotenusa, anguloAlpha, longitudLado);
+        }
+        turtle.show();
     }
 }
