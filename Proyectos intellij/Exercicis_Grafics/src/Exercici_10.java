@@ -11,7 +11,7 @@ public class Exercici_10 {
             turtle.forward(2);
             turtle.turnRight(1);
         }
-        // Este es un pixel que falta en la figura para que sea simétrica, lo he añadido manualmente.
+        // Este es un pixel que falta en la figura por la precisión del programa, lo he añadido manualmente para que sea simétrica.
         turtle.forward(1);
 
         // Segunda linea recta de la figura.
@@ -47,5 +47,8 @@ public class Exercici_10 {
         segundoSemicirculo(longitud);
 
         turtle.show();
+
+        double cosa = 360 / (2 * Math.PI);
+        System.out.println(cosa*2);
     }
 }

@@ -26,7 +26,8 @@ public class Exercici_9 {
 
         for (int i = 0; i < numeroTriangulos; i++) {
             turtle.resetAngle();
-            turtle.turnRight(((int) anguloBeta * i)- ((int) anguloBeta / 2));
+            double anguloFinal = (anguloBeta * i) - (anguloBeta / 2);
+            turtle.turnRight((int) anguloFinal);
             triangulo(hipotenusa, anguloAlpha, longitudLado);
         }
         turtle.show();
