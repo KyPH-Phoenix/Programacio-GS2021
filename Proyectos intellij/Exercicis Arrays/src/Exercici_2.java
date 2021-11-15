@@ -6,6 +6,6 @@ public class Exercici_2 {
         int[] ar = new int[1000];
 
         //System.out.println(ar[1000]);
-        System.out.println("Si se intenta accedir a l'element numero 1000 no es pot perque no existeix, per tant torna error.");
+        System.out.println("Si s'intenta accedir a l'element numero 1000 no es pot perque no existeix, per tant torna error.");
     }
 }
