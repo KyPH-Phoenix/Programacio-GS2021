@@ -1,4 +1,5 @@
 public class Exercici_10 {
+    // Llamamos a la función Turtle de forma global.
     static Turtle turtle = new Turtle(800, 800);
 
     private static void primerSemicirculo(int longitud) {
@@ -38,17 +39,18 @@ public class Exercici_10 {
     }
 
     public static void main(String[] args) {
-        System.out.println();
+        // Descripción del programa.
+        System.out.println("Este programa representa la siguiente figura:");
         System.out.println();
 
+        // Longitud del radio.
         int longitud = 115;
 
+        // Pintamos la figura.
         primerSemicirculo(longitud);
         segundoSemicirculo(longitud);
 
+        // Mostramos el dibujo.
         turtle.show();
-
-        double cosa = 360 / (2 * Math.PI);
-        System.out.println(cosa*2);
     }
 }

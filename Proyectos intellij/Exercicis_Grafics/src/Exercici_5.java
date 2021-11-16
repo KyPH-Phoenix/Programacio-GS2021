@@ -13,7 +13,7 @@ public class Exercici_5 {
     }
 
     // Funcion para pasar al siguiente cuadrado
-    private static void siguienteCuadrado(){
+    private static void siguienteCuadrado() {
         turtle.penDown = false;
         turtle.turnLeft(90);
         turtle.forward(20);
@@ -42,7 +42,7 @@ public class Exercici_5 {
             cuadrado(longitudLado);
             siguienteCuadrado();
             // Aumentamos el tamaño del lado para cada ciclo.
-            longitudLado += (20*2);
+            longitudLado += (20 * 2);
         }
 
         // Mostramos el dibujo.
