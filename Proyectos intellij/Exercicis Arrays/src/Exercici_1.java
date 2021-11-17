@@ -1,5 +1,9 @@
 import java.sql.Array;
 
+/*
+¡ IMPORTANTE ACABAR !
+ */
+
 public class Exercici_1 {
     public static void main(String[] args) {
         System.out.println();

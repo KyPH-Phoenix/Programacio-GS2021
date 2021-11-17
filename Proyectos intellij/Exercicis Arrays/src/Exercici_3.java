@@ -18,7 +18,7 @@ public class Exercici_3 {
 
         double vectorX = Math.abs(coordenada1[0] - coordenada2[0]);
         double vectorY = Math.abs(coordenada1[1] - coordenada2[1]);
-        double distEuclidiana = Math.sqrt( vectorX + vectorY);
+        double distEuclidiana = Math.hypot(vectorX, vectorY);
 
         System.out.println(distEuclidiana);
     }

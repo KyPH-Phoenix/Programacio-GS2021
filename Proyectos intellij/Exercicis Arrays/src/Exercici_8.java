@@ -52,11 +52,16 @@ public class Exercici_8 {
     }
 
     public static void main(String[] args) {
-        int[][] array = new int[2][];
-        Scanner sc = new Scanner(System.in);
-        primeraDim(array, sc);
-        segundaDim(array, sc);
+        int[][] array = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {8, 9, 10}
+        };
+        //int[][] array = new int[2][];
+        //Scanner sc = new Scanner(System.in);
+        //primeraDim(array, sc);
+        //segundaDim(array, sc);
         int[][] arrayReplica = copia(array);
-        imprimir(arrayReplica);
+        System.out.println(Arrays.deepToString(arrayReplica));
     }
 }
