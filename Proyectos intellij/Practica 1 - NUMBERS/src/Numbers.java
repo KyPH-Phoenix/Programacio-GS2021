@@ -1,5 +1,38 @@
+import java.util.Locale;
+
 public class Numbers {
     public static String say(long n) {
+        String numero = "";
+        int[] array = new int[4];
+
+        for (int i = 4; i > 0; i = i--) {
+            double magnitud = Math.pow(10, i);
+            if ((long) (n / magnitud) != 0) {
+                array[array.length - i] = (int) (n / magnitud);
+                n = (long) (n % magnitud);
+            } else {
+                array[array.length - i] = 0;
+            }
+        }
+
+        /*if (n < 100) {
+            if (n < 20) {
+                numero = zeroToNineteen(n);
+            }
+            if (n % 10 != 0) {
+                numero = tenMultiples(n - (n % 10)) + "-" + zeroToNineteen(n % 10);
+            } else {
+                numero = tenMultiples(n);
+            }
+        }*/
+        return numero.substring(0, 1).toUpperCase() + numero.substring(1);
+    }
+
+    public static long words(String s) {
+        return 0;
+    }
+
+    private static String zeroToNineteen (long n){
         String numero = "";
         switch ((int) n) {
             case 0:
@@ -65,14 +98,34 @@ public class Numbers {
         return numero;
     }
 
-    public static long words(String s) {
-        return 0;
-    }
-
-    private static String primeraMayus (String numero) {
-        String result = "";
-        result += (char) (numero.charAt(0) - 32);
-        numero.charAt(0) =
+    private static String tenMultiples (long n) {
+        String numero = "";
+        switch ((int) n) {
+            case 20:
+                numero = "twenty";
+                break;
+            case 30:
+                numero = "thirty";
+                break;
+            case 40:
+                numero = "forty";
+                break;
+            case 50:
+                numero = "fifty";
+                break;
+            case 60:
+                numero = "sixty";
+                break;
+            case 70:
+                numero = "seventy";
+                break;
+            case 80:
+                numero = "eighty";
+                break;
+            case 90:
+                numero = "ninety";
+                break;
+        }
         return numero;
     }
 }
