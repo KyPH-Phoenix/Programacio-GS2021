@@ -7,9 +7,4 @@ public class Exercici_5 {
 
         // El codi anterior no funciona perque l'array no es declara a cap moment.
     }
-
-
-
-
-    
 }

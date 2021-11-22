@@ -2,18 +2,57 @@ import java.util.Locale;
 
 public class Numbers {
     public static String say(long n) {
-        String numero = "";
-        int[] array = new int[4];
+        /*
+        Declaración de variables. En este caso la nomenclatura es:
+            - Las primeras letras corresponden a la magnitud. Ej: bil = Bilion, thou = Thousand, tril = Trillion, etc.
+            - Lo siguiente corresponde a si es unidades, decenas o centenas.
+            Ejemplo:
+                quadU = Quadrillion Units
+                trilT = Trillion Tens
+                thouH = Thousand Hundreds
+         */
 
-        for (int i = 4; i > 0; i = i--) {
-            double magnitud = Math.pow(10, i);
-            if ((long) (n / magnitud) != 0) {
-                array[array.length - i] = (int) (n / magnitud);
-                n = (long) (n % magnitud);
-            } else {
-                array[array.length - i] = 0;
+
+        String numero = "";
+        int[] digits = convertirArray(n);
+        String[] letters = new String[digits.length];
+
+        int variableCualquiera = 0;
+
+        for (int i = 0; i < digits.length; i++) {
+            variableCualquiera = digits.length - i;
+            if (digits[i] != 0) {
+                break;
             }
         }
+
+        /*if (variableCualquiera > 3) {
+            if (variableCualquiera > 6) {
+                if (variableCualquiera > 9) {
+                    if (variableCualquiera > 12) {
+                        if (variableCualquiera > 15) {
+                            if (variableCualquiera > 18) {
+                                // quintillones
+                            } else {
+                                //quadrillones
+                            }
+                        } else {
+                            // trillones
+                        }
+                    } else {
+                        // billones
+                    }
+                } else {
+                    // millones
+                }
+            } else {
+                //millares
+            }
+        } else {
+            // centenas
+        } */
+
+        int a = 0;
 
         /*if (n < 100) {
             if (n < 20) {
@@ -32,100 +71,62 @@ public class Numbers {
         return 0;
     }
 
-    private static String zeroToNineteen (long n){
-        String numero = "";
-        switch ((int) n) {
-            case 0:
-                numero = "zero";
-                break;
-            case 1:
-                numero = "one";
-                break;
-            case 2:
-                numero = "two";
-                break;
-            case 3:
-                numero = "three";
-                break;
-            case 4:
-                numero = "four";
-                break;
-            case 5:
-                numero = "five";
-                break;
-            case 6:
-                numero = "six";
-                break;
-            case 7:
-                numero = "seven";
-                break;
-            case 8:
-                numero = "eight";
-                break;
-            case 9:
-                numero = "nine";
-                break;
-            case 10:
-                numero = "ten";
-                break;
-            case 11:
-                numero = "eleven";
-                break;
-            case 12:
-                numero = "twelve";
-                break;
-            case 13:
-                numero = "thirteen";
-                break;
-            case 14:
-                numero = "fourteen";
-                break;
-            case 15:
-                numero = "fifteen";
-                break;
-            case 16:
-                numero = "sixteen";
-                break;
-            case 17:
-                numero = "seventeen";
-                break;
-            case 18:
-                numero = "eighteen";
-                break;
-            case 19:
-                numero = "nineteen";
+    private static int[] convertirArray (long n) {
+        int[] array = new int[21];
+
+        for (int i = array.length; i > 0; i--) {
+            double magnitud = Math.pow(10, i);
+            if ((long) (n / magnitud) != 0) {
+                array[array.length - i] = (int) (n / magnitud);
+                n = (long) (n % magnitud);
+            } else {
+                array[array.length - i] = 0;
+            }
         }
-        return numero;
+        return array;
     }
 
-    private static String tenMultiples (long n) {
-        String numero = "";
-        switch ((int) n) {
-            case 20:
-                numero = "twenty";
-                break;
-            case 30:
-                numero = "thirty";
-                break;
-            case 40:
-                numero = "forty";
-                break;
-            case 50:
-                numero = "fifty";
-                break;
-            case 60:
-                numero = "sixty";
-                break;
-            case 70:
-                numero = "seventy";
-                break;
-            case 80:
-                numero = "eighty";
-                break;
-            case 90:
-                numero = "ninety";
-                break;
-        }
-        return numero;
+    private static String zeroToNineteen(int n) {
+        String[] array = new String[20];
+
+        array[0] = "zero";
+        array[1] = "one";
+        array[2] = "two";
+        array[3] = "three";
+        array[4] = "four";
+        array[5] = "five";
+        array[6] = "six";
+        array[7] = "seven";
+        array[8] = "eight";
+        array[9] = "nine";
+        array[10] = "ten";
+        array[11] = "eleven";
+        array[12] = "twelve";
+        array[13] = "thirteen";
+        array[14] = "fourteen";
+        array[15] = "fifteen";
+        array[16] = "sixteen";
+        array[17] = "seventeen";
+        array[18] = "eighteen";
+        array[19] = "nineteen";
+
+        return array[n];
+    }
+
+    private static String tenMultiples(int n) {
+        n = (n - 2) / 10;
+
+        String[] array = new String[8];
+
+        array[0] = "twenty";
+        array[1] = "thirty";
+        array[2] = "forty";
+        array[3] = "fifty";
+        array[4] = "sixty";
+        array[5] = "seventy";
+        array[6] = "eighty";
+        array[7] = "ninety";
+
+        return array[n];
     }
 }
