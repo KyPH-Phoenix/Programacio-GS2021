@@ -7,7 +7,7 @@ public class Calculator {
         return x - y;
     }
 
-    static int product (int x, int y) {º
+    static int product (int x, int y) {
         return x * y;
     }
 

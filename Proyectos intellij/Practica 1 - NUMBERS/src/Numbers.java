@@ -2,17 +2,6 @@ import java.util.Locale;
 
 public class Numbers {
     public static String say(long n) {
-        /*
-        Declaración de variables. En este caso la nomenclatura es:
-            - Las primeras letras corresponden a la magnitud. Ej: bil = Bilion, thou = Thousand, tril = Trillion, etc.
-            - Lo siguiente corresponde a si es unidades, decenas o centenas.
-            Ejemplo:
-                quadU = Quadrillion Units
-                trilT = Trillion Tens
-                thouH = Thousand Hundreds
-         */
-
-
         String numero = "";
         int[] digits = convertirArray(n);
         String[] letters = new String[digits.length];
@@ -87,34 +76,15 @@ public class Numbers {
     }
 
     private static String zeroToNineteen(int n) {
-        String[] array = new String[20];
 
-        array[0] = "zero";
-        array[1] = "one";
-        array[2] = "two";
-        array[3] = "three";
-        array[4] = "four";
-        array[5] = "five";
-        array[6] = "six";
-        array[7] = "seven";
-        array[8] = "eight";
-        array[9] = "nine";
-        array[10] = "ten";
-        array[11] = "eleven";
-        array[12] = "twelve";
-        array[13] = "thirteen";
-        array[14] = "fourteen";
-        array[15] = "fifteen";
-        array[16] = "sixteen";
-        array[17] = "seventeen";
-        array[18] = "eighteen";
-        array[19] = "nineteen";
+        String[] array = {"zero","one","two","three","four","five","six", "seven","eight","nine","ten","eleven",
+                "twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"};
 
         return array[n];
     }
 
     private static String tenMultiples(int n) {
-        n = (n - 2) / 10;
+        n = (n / 10) - 2;
 
         String[] array = new String[8];
 
