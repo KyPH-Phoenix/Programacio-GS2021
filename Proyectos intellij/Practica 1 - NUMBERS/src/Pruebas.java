@@ -2,58 +2,85 @@ import java.util.Arrays;
 
 public class Pruebas {
     public static void main(String[] args) {
-        long n = 1;
+        long n = 9_223_372_036_854_775_807L;
         int[] array = convertirArray(n);
         int variableCualquiera = cifrasNumero(array);
+
+        String[] sufijos = {""," thousand "," million "," billion "," trillion "," quadrillion "," quintillion "};
 
         System.out.println(Arrays.toString(array));
         System.out.println(variableCualquiera);
 
+        StringBuilder resultado = new StringBuilder();
+        int fase = (variableCualquiera - 1) / 3;
+
+        while (variableCualquiera > 0) {
+            resultado.append(sacarCentenas(variableCualquiera, array));
+            if (array[array.length - variableCualquiera] + array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
+                resultado.append(sufijos[fase]);
+            }
+
+            fase--;
+            int resto = (variableCualquiera % 3);
+            if (resto == 0) {
+                resto = 3;
+            }
+            variableCualquiera -= resto;
+        }
+
+        System.out.println(resultado.substring(0,1).toUpperCase() + resultado.substring(1));
+    }
+
+    private static String sacarCentenas (int longitudNumero, int[] array) {
+        String centenas = "";
+        String decenunidades = "";
         String decenas = "";
         String unidades = "";
-        String decenunidades = "";
-        String centenas = "";
+
         String resultado = "";
 
-        // Cifra de las centenas
-        if (variableCualquiera % 3 == 0) {
-            centenas = zeroToNineteen((int) array[array.length - variableCualquiera]) + " hundred";
-            resultado = centenas;
 
-            // Añade un and si los digitos de despues no son 0.
-            if (array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
-                resultado = resultado + " and ";
+        // Cifra de las centenas
+        if (longitudNumero % 3 == 0) {
+            if ( array[array.length - longitudNumero] != 0) {
+                centenas = zeroToNineteen((int) array[array.length - longitudNumero]) + " hundred";
+                resultado = centenas;
+
+                // Añade un and si los digitos de despues no son 0.
+                if (array[array.length - longitudNumero + 1] + array[array.length - longitudNumero + 2] != 0) {
+                    resultado = resultado + " and ";
+                }
             }
             // Pasa a la siguiente cifra
-            variableCualquiera--;
+            longitudNumero--;
         }
 
         long decenasyUnidades = 0;
 
-        if (variableCualquiera > 1) {
-            decenasyUnidades = (array[array.length - variableCualquiera] * 10) + array[array.length - variableCualquiera + 1];
+        if (longitudNumero % 3 == 2) {
+            decenasyUnidades = (array[array.length - longitudNumero] * 10) + array[array.length - longitudNumero + 1];
         }
 
-        if (array[array.length - variableCualquiera] < 2 && decenasyUnidades > 0) {
+        if (decenasyUnidades < 20 && decenasyUnidades > 0) {
             decenunidades = zeroToNineteen((int) decenasyUnidades);
             resultado = resultado + decenunidades;
         } else {
-            if (array[array.length - variableCualquiera] != 0 && variableCualquiera == 2) {
-                decenas = tenMultiples(array[array.length - variableCualquiera]);
+            if (array[array.length - longitudNumero] != 0 && longitudNumero % 3 == 2) {
+                decenas = tenMultiples(array[array.length - longitudNumero]);
                 resultado = resultado +  decenas;
-                if (array[array.length - variableCualquiera + 1] != 0) {
+                if (array[array.length - longitudNumero + 1] != 0) {
                     resultado = resultado + "-";
                 }
-                variableCualquiera--;
+                longitudNumero--;
             }
 
-            if (array[array.length - variableCualquiera] != 0 && variableCualquiera == 1) {
-                unidades = zeroToNineteen((int) array[array.length - variableCualquiera]);
+            if (array[array.length - longitudNumero] != 0 && longitudNumero % 3 == 1) {
+                unidades = zeroToNineteen((int) array[array.length - longitudNumero]);
             }
             resultado = resultado + unidades;
         }
 
-        System.out.println(resultado.substring(0,1).toUpperCase() + resultado.substring(1));
+        return resultado;
     }
 
     private static int cifrasNumero(int[] arrayDigits) {

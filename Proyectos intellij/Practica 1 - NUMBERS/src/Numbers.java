@@ -6,49 +6,7 @@ public class Numbers {
         int[] digits = convertirArray(n);
         int longitudNumero = cifrasNumero(digits);
 
-        String decenas = "";
-        String unidades = "";
-        String decenunidades = "";
-        String centenas = "";
-        String resultado = "";
-
-        // Cifra de las centenas
-        if (longitudNumero % 3 == 0) {
-            centenas = zeroToNineteen((int) digits[digits.length - longitudNumero]) + " hundred";
-            resultado = centenas;
-
-            // Añade un and si los digitos de despues no son 0.
-            if (digits[digits.length - longitudNumero + 1] + digits[digits.length - longitudNumero + 2] != 0) {
-                resultado = resultado + " and ";
-            }
-            // Pasa a la siguiente cifra
-            longitudNumero--;
-        }
-
-        long decenasyUnidades = 0;
-
-        if (longitudNumero > 1) {
-            decenasyUnidades = (digits[digits.length - longitudNumero] * 10) + digits[digits.length - longitudNumero + 1];
-        }
-
-        if (digits[digits.length - longitudNumero] < 2 && decenasyUnidades > 0) {
-            decenunidades = zeroToNineteen((int) decenasyUnidades);
-            resultado = resultado + decenunidades;
-        } else {
-            if (digits[digits.length - longitudNumero] != 0 && longitudNumero == 2) {
-                decenas = tenMultiples(digits[digits.length - longitudNumero]);
-                resultado = resultado +  decenas;
-                if (digits[digits.length - longitudNumero + 1] != 0) {
-                    resultado = resultado + "-";
-                }
-                longitudNumero--;
-            }
-
-            if (digits[digits.length - longitudNumero] != 0 && longitudNumero == 1) {
-                unidades = zeroToNineteen((int) digits[digits.length - longitudNumero]);
-            }
-            resultado = resultado + unidades;
-        }
+        String resultado = sacarCentenas(longitudNumero, digits);
 
         //System.out.println(resultado.substring(0,1).toUpperCase() + resultado.substring(1));
 
@@ -58,6 +16,55 @@ public class Numbers {
     public static long words(String s) {
 
         return 0;
+    }
+
+    private static String sacarCentenas (int longitudNumero, int[] array) {
+        String centenas = "";
+        String decenunidades = "";
+        String decenas = "";
+        String unidades = "";
+
+        String resultado = "";
+
+        // Cifra de las centenas
+        if (longitudNumero % 3 == 0) {
+            centenas = zeroToNineteen((int) array[array.length - longitudNumero]) + " hundred";
+            resultado = centenas;
+
+            // Añade un and si los digitos de despues no son 0.
+            if (array[array.length - longitudNumero + 1] + array[array.length - longitudNumero + 2] != 0) {
+                resultado = resultado + " and ";
+            }
+            // Pasa a la siguiente cifra
+            longitudNumero--;
+        }
+
+        long decenasyUnidades = 0;
+
+        if (longitudNumero > 1) {
+            decenasyUnidades = (array[array.length - longitudNumero] * 10) + array[array.length - longitudNumero + 1];
+        }
+
+        if (array[array.length - longitudNumero] < 2 && decenasyUnidades > 0) {
+            decenunidades = zeroToNineteen((int) decenasyUnidades);
+            resultado = resultado + decenunidades;
+        } else {
+            if (array[array.length - longitudNumero] != 0 && longitudNumero == 2) {
+                decenas = tenMultiples(array[array.length - longitudNumero]);
+                resultado = resultado +  decenas;
+                if (array[array.length - longitudNumero + 1] != 0) {
+                    resultado = resultado + "-";
+                }
+                longitudNumero--;
+            }
+
+            if (array[array.length - longitudNumero] != 0 && longitudNumero == 1) {
+                unidades = zeroToNineteen((int) array[array.length - longitudNumero]);
+            }
+            resultado = resultado + unidades;
+        }
+
+        return resultado;
     }
 
     private static int cifrasNumero(int[] arrayDigits) {
