@@ -76,27 +76,17 @@ public class Numbers {
     }
 
     private static String zeroToNineteen(int n) {
-
-        String[] array = {"zero","one","two","three","four","five","six", "seven","eight","nine","ten","eleven",
+        String[] array019 = {"zero","one","two","three","four","five","six", "seven","eight","nine","ten","eleven",
                 "twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"};
 
-        return array[n];
+        return array019[n];
     }
 
     private static String tenMultiples(int n) {
         n = (n / 10) - 2;
 
-        String[] array = new String[8];
+        String[] array2090 = {"twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"};
 
-        array[0] = "twenty";
-        array[1] = "thirty";
-        array[2] = "forty";
-        array[3] = "fifty";
-        array[4] = "sixty";
-        array[5] = "seventy";
-        array[6] = "eighty";
-        array[7] = "ninety";
-
-        return array[n];
+        return array2090[n];
     }
 }
