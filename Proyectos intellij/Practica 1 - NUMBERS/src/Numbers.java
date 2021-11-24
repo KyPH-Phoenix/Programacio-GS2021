@@ -5,22 +5,22 @@ public class Numbers {
         String numero = "";
         int[] digits = convertirArray(n);
         String[] letters = new String[digits.length];
+        int longitudNumero = cifrasNumero(digits);
 
-        int variableCualquiera = 0;
-
-        for (int i = 0; i < digits.length; i++) {
-            variableCualquiera = digits.length - i;
+        /*for (int i = 0; i < digits.length; i++) {
+            longitudNumero = digits.length - i;
             if (digits[i] != 0) {
                 break;
             }
-        }
+        }*/
 
-        /*if (variableCualquiera > 3) {
-            if (variableCualquiera > 6) {
-                if (variableCualquiera > 9) {
-                    if (variableCualquiera > 12) {
-                        if (variableCualquiera > 15) {
-                            if (variableCualquiera > 18) {
+
+        /*if (longitudNumero > 3) {
+            if (longitudNumero > 6) {
+                if (longitudNumero > 9) {
+                    if (longitudNumero > 12) {
+                        if (longitudNumero > 15) {
+                            if (longitudNumero > 18) {
                                 // quintillones
                             } else {
                                 //quadrillones
@@ -57,7 +57,21 @@ public class Numbers {
     }
 
     public static long words(String s) {
+
         return 0;
+    }
+
+    private static int cifrasNumero (int[] arrayDigits) {
+        int longitudNumero = 0;
+
+        for (int i = 0; i < arrayDigits.length; i++) {
+            longitudNumero = arrayDigits.length - i;
+            if (arrayDigits[i] != 0) {
+                break;
+            }
+        }
+
+        return longitudNumero;
     }
 
     private static int[] convertirArray (long n) {
