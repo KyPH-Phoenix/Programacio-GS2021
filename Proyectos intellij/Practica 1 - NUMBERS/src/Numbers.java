@@ -2,58 +2,57 @@ import java.util.Locale;
 
 public class Numbers {
     public static String say(long n) {
-        String numero = "";
+
         int[] digits = convertirArray(n);
-        String[] letters = new String[digits.length];
         int longitudNumero = cifrasNumero(digits);
 
-        /*for (int i = 0; i < digits.length; i++) {
-            longitudNumero = digits.length - i;
-            if (digits[i] != 0) {
-                break;
-            }
-        }*/
+        String decenas = "";
+        String unidades = "";
+        String decenunidades = "";
+        String centenas = "";
+        String resultado = "";
 
+        // Cifra de las centenas
+        if (longitudNumero % 3 == 0) {
+            centenas = zeroToNineteen((int) digits[digits.length - longitudNumero]) + " hundred";
+            resultado = centenas;
 
-        /*if (longitudNumero > 3) {
-            if (longitudNumero > 6) {
-                if (longitudNumero > 9) {
-                    if (longitudNumero > 12) {
-                        if (longitudNumero > 15) {
-                            if (longitudNumero > 18) {
-                                // quintillones
-                            } else {
-                                //quadrillones
-                            }
-                        } else {
-                            // trillones
-                        }
-                    } else {
-                        // billones
-                    }
-                } else {
-                    // millones
-                }
-            } else {
-                //millares
+            // Añade un and si los digitos de despues no son 0.
+            if (digits[digits.length - longitudNumero + 1] + digits[digits.length - longitudNumero + 2] != 0) {
+                resultado = resultado + " and ";
             }
+            // Pasa a la siguiente cifra
+            longitudNumero--;
+        }
+
+        long decenasyUnidades = 0;
+
+        if (longitudNumero > 1) {
+            decenasyUnidades = (digits[digits.length - longitudNumero] * 10) + digits[digits.length - longitudNumero + 1];
+        }
+
+        if (digits[digits.length - longitudNumero] < 2 && decenasyUnidades > 0) {
+            decenunidades = zeroToNineteen((int) decenasyUnidades);
+            resultado = resultado + decenunidades;
         } else {
-            // centenas
-        } */
-
-        int a = 0;
-
-        /*if (n < 100) {
-            if (n < 20) {
-                numero = zeroToNineteen(n);
+            if (digits[digits.length - longitudNumero] != 0 && longitudNumero == 2) {
+                decenas = tenMultiples(digits[digits.length - longitudNumero]);
+                resultado = resultado +  decenas;
+                if (digits[digits.length - longitudNumero + 1] != 0) {
+                    resultado = resultado + "-";
+                }
+                longitudNumero--;
             }
-            if (n % 10 != 0) {
-                numero = tenMultiples(n - (n % 10)) + "-" + zeroToNineteen(n % 10);
-            } else {
-                numero = tenMultiples(n);
+
+            if (digits[digits.length - longitudNumero] != 0 && longitudNumero == 1) {
+                unidades = zeroToNineteen((int) digits[digits.length - longitudNumero]);
             }
-        }*/
-        return numero.substring(0, 1).toUpperCase() + numero.substring(1);
+            resultado = resultado + unidades;
+        }
+
+        //System.out.println(resultado.substring(0,1).toUpperCase() + resultado.substring(1));
+
+        return resultado.substring(0,1).toUpperCase() + resultado.substring(1);
     }
 
     public static long words(String s) {
@@ -61,7 +60,7 @@ public class Numbers {
         return 0;
     }
 
-    private static int cifrasNumero (int[] arrayDigits) {
+    private static int cifrasNumero(int[] arrayDigits) {
         int longitudNumero = 0;
 
         for (int i = 0; i < arrayDigits.length; i++) {
@@ -78,10 +77,10 @@ public class Numbers {
         int[] array = new int[21];
 
         for (int i = array.length; i > 0; i--) {
-            double magnitud = Math.pow(10, i);
-            if ((long) (n / magnitud) != 0) {
-                array[array.length - i] = (int) (n / magnitud);
-                n = (long) (n % magnitud);
+            double potencia = Math.pow(10, i - 1);
+            if ((long) (n / potencia) != 0) {
+                array[array.length - i] = (int) (n / potencia);
+                n = (long) (n % potencia);
             } else {
                 array[array.length - i] = 0;
             }
@@ -90,17 +89,18 @@ public class Numbers {
     }
 
     private static String zeroToNineteen(int n) {
-        String[] array019 = {"zero","one","two","three","four","five","six", "seven","eight","nine","ten","eleven",
+        String[] array0_19 = {"zero","one","two","three","four","five","six", "seven","eight","nine","ten","eleven",
                 "twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"};
 
-        return array019[n];
+        return array0_19[n];
     }
 
     private static String tenMultiples(int n) {
-        n = (n / 10) - 2;
+        n = (n) - 2;
 
-        String[] array2090 = {"twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"};
+        String[] array20_90 = {"twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"};
 
-        return array2090[n];
+        return array20_90[n];
     }
 }
+
