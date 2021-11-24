@@ -1,12 +1,10 @@
 import time
 r=str()
-a = str("LA MAMA DE ")
+a = str("LA MAMA")
+b = str("DE")
 c=0
-def mamadela():    
-    while c!=23:
-        r=r+a
-        c=c+1
-w
-mamadela()
-
-print(r)
+while True:
+    print(a)
+    time.sleep(0.0000000000001)
+    print(b)
+    time.sleep(0.0000000000001)
