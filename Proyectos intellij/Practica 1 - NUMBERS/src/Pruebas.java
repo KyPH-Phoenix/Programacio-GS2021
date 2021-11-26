@@ -2,49 +2,52 @@ import java.util.Arrays;
 //
 public class Pruebas {
     public static void main(String[] args) {
-        long n = 254854001001L;
+        long n = 543_432_655_065_543_432L;
         int[] array = convertirArray(n);
         int variableCualquiera = cifrasNumero(array);
-
-        String[] sufijos = {"", " thousand ", " million ", " billion ", " trillion ", " quadrillion ", " quintillion "};
 
         System.out.println(Arrays.toString(array));
         System.out.println(variableCualquiera);
 
-        System.out.println("----");
-        System.out.println(array[array.length - variableCualquiera + 1]);
-        System.out.println(array[array.length - variableCualquiera + 2]);
-        System.out.println(array[array.length - variableCualquiera + 3]);
-        System.out.println("----");
+        String resultado = "";
 
+        if (n == 0) {
+            resultado = "zero";
+        } else {
+            resultado = añadirSufijos(variableCualquiera, array);
+        }
+
+        System.out.println(resultado.substring(0,1).toUpperCase() + resultado.substring(1));
+    }
+
+    private static String añadirSufijos (int longitudNumero, int[] array) {
+        String[] sufijos = {"", " thousand ", " million ", " billion ", " trillion ", " quadrillion ", " quintillion "};
 
         StringBuilder resultado = new StringBuilder();
 
-        if (n == 0) {
-            resultado.append("zero");
-        } else {
+        int fase = (longitudNumero - 1) / 3;
 
-            int fase = (variableCualquiera - 1) / 3;
-
-            while (variableCualquiera > 0) {
-                resultado.append(sacarCentenas(variableCualquiera, array));
-                // METE EL SUFIJO
-                if (variableCualquiera > 3 && array[array.length - variableCualquiera] + array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
-                    resultado.append(sufijos[fase]);
-                } /*  */else if (fase == 1 && array[array.length - variableCualquiera - 1] == 0) {
-                    resultado.append(sufijos[fase]);
-                    resultado.append("and ");
-                }
-                fase--;
-                int resto = (variableCualquiera % 3);
-                if (resto == 0) {
-                    resto = 3;
-                }
-                variableCualquiera -= resto;
+        while (longitudNumero > 0) {
+            resultado.append(sacarCentenas(longitudNumero, array));
+            // Mete el sufijo solo si alguno de los 3 valores no es 0
+            if (longitudNumero > 3 && array[array.length - longitudNumero] + array[array.length - longitudNumero + 1] + array[array.length - longitudNumero + 2] != 0) {
+                resultado.append(sufijos[fase]);
             }
+
+            // Si después del thousand no hay centenas, pero si decenas o unidades, entonces pone "and".
+            if (fase == 1 && (array[array.length -3] == 0 && array[array.length - 1] + array[array.length - 2] != 0)) {
+                resultado.append("and ");
+            }
+
+            fase--;
+            int resto = (longitudNumero % 3);
+            if (resto == 0) {
+                resto = 3;
+            }
+            longitudNumero -= resto;
         }
 
-        System.out.println(resultado.substring(0, 1).toUpperCase() + resultado.substring(1));
+        return resultado.toString();
     }
 
     private static String sacarCentenas(int longitudNumero, int[] array) {
@@ -116,10 +119,10 @@ public class Pruebas {
         int[] array = new int[21];
 
         for (int i = array.length; i > 0; i--) {
-            double potencia = Math.pow(10, i - 1);
-            if ((long) (n / potencia) != 0) {
+            long potencia = (long) Math.pow(10, i - 1);
+            if ((n / potencia) != 0) {
                 array[array.length - i] = (int) (n / potencia);
-                n = (long) (n % potencia);
+                n =(n % potencia);
             } else {
                 array[array.length - i] = 0;
             }
