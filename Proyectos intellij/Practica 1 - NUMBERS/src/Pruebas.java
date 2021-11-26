@@ -2,11 +2,11 @@ import java.util.Arrays;
 
 public class Pruebas {
     public static void main(String[] args) {
-        long n = 9_223_372_036_854_775_807L;
+        long n = 1104L;
         int[] array = convertirArray(n);
         int variableCualquiera = cifrasNumero(array);
 
-        String[] sufijos = {""," thousand "," million "," billion "," trillion "," quadrillion "," quintillion "};
+        String[] sufijos = {"", " thousand ", " million ", " billion ", " trillion ", " quadrillion ", " quintillion "};
 
         System.out.println(Arrays.toString(array));
         System.out.println(variableCualquiera);
@@ -16,10 +16,12 @@ public class Pruebas {
 
         while (variableCualquiera > 0) {
             resultado.append(sacarCentenas(variableCualquiera, array));
-            if (array[array.length - variableCualquiera] + array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
+            if (variableCualquiera > 2 && array[array.length - variableCualquiera] + array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
                 resultado.append(sufijos[fase]);
             }
-
+            else if (fase == 1 && array[array.length - variableCualquiera - 1] == 0) {
+                resultado.append("and ");
+            }
             fase--;
             int resto = (variableCualquiera % 3);
             if (resto == 0) {
@@ -28,10 +30,10 @@ public class Pruebas {
             variableCualquiera -= resto;
         }
 
-        System.out.println(resultado.substring(0,1).toUpperCase() + resultado.substring(1));
+        System.out.println(resultado.substring(0, 1).toUpperCase() + resultado.substring(1));
     }
 
-    private static String sacarCentenas (int longitudNumero, int[] array) {
+    private static String sacarCentenas(int longitudNumero, int[] array) {
         String centenas = "";
         String decenunidades = "";
         String decenas = "";
@@ -42,7 +44,7 @@ public class Pruebas {
 
         // Cifra de las centenas
         if (longitudNumero % 3 == 0) {
-            if ( array[array.length - longitudNumero] != 0) {
+            if (array[array.length - longitudNumero] != 0) {
                 centenas = zeroToNineteen((int) array[array.length - longitudNumero]) + " hundred";
                 resultado = centenas;
 
@@ -67,7 +69,7 @@ public class Pruebas {
         } else {
             if (array[array.length - longitudNumero] != 0 && longitudNumero % 3 == 2) {
                 decenas = tenMultiples(array[array.length - longitudNumero]);
-                resultado = resultado +  decenas;
+                resultado = resultado + decenas;
                 if (array[array.length - longitudNumero + 1] != 0) {
                     resultado = resultado + "-";
                 }
@@ -96,7 +98,7 @@ public class Pruebas {
         return longitudNumero;
     }
 
-    private static int[] convertirArray (long n) {
+    private static int[] convertirArray(long n) {
         int[] array = new int[21];
 
         for (int i = array.length; i > 0; i--) {
@@ -112,8 +114,8 @@ public class Pruebas {
     }
 
     private static String zeroToNineteen(int n) {
-        String[] array0_19 = {"zero","one","two","three","four","five","six", "seven","eight","nine","ten","eleven",
-                "twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"};
+        String[] array0_19 = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven",
+                "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
 
         return array0_19[n];
     }
@@ -121,7 +123,7 @@ public class Pruebas {
     private static String tenMultiples(int n) {
         n = (n) - 2;
 
-        String[] array20_90 = {"twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"};
+        String[] array20_90 = {"twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
         return array20_90[n];
     }
