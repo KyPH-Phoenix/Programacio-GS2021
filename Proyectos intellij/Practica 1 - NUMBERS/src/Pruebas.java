@@ -1,8 +1,8 @@
 import java.util.Arrays;
-
+//
 public class Pruebas {
     public static void main(String[] args) {
-        long n = 1104L;
+        long n = 254854001001L;
         int[] array = convertirArray(n);
         int variableCualquiera = cifrasNumero(array);
 
@@ -11,23 +11,37 @@ public class Pruebas {
         System.out.println(Arrays.toString(array));
         System.out.println(variableCualquiera);
 
-        StringBuilder resultado = new StringBuilder();
-        int fase = (variableCualquiera - 1) / 3;
+        System.out.println("----");
+        System.out.println(array[array.length - variableCualquiera + 1]);
+        System.out.println(array[array.length - variableCualquiera + 2]);
+        System.out.println(array[array.length - variableCualquiera + 3]);
+        System.out.println("----");
 
-        while (variableCualquiera > 0) {
-            resultado.append(sacarCentenas(variableCualquiera, array));
-            if (variableCualquiera > 2 && array[array.length - variableCualquiera] + array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
-                resultado.append(sufijos[fase]);
+
+        StringBuilder resultado = new StringBuilder();
+
+        if (n == 0) {
+            resultado.append("zero");
+        } else {
+
+            int fase = (variableCualquiera - 1) / 3;
+
+            while (variableCualquiera > 0) {
+                resultado.append(sacarCentenas(variableCualquiera, array));
+                // METE EL SUFIJO
+                if (variableCualquiera > 3 && array[array.length - variableCualquiera] + array[array.length - variableCualquiera + 1] + array[array.length - variableCualquiera + 2] != 0) {
+                    resultado.append(sufijos[fase]);
+                } /*  */else if (fase == 1 && array[array.length - variableCualquiera - 1] == 0) {
+                    resultado.append(sufijos[fase]);
+                    resultado.append("and ");
+                }
+                fase--;
+                int resto = (variableCualquiera % 3);
+                if (resto == 0) {
+                    resto = 3;
+                }
+                variableCualquiera -= resto;
             }
-            else if (fase == 1 && array[array.length - variableCualquiera - 1] == 0) {
-                resultado.append("and ");
-            }
-            fase--;
-            int resto = (variableCualquiera % 3);
-            if (resto == 0) {
-                resto = 3;
-            }
-            variableCualquiera -= resto;
         }
 
         System.out.println(resultado.substring(0, 1).toUpperCase() + resultado.substring(1));
