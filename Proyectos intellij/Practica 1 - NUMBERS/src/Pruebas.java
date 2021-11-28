@@ -2,12 +2,27 @@ import java.util.Arrays;
 //
 public class Pruebas {
     public static void main(String[] args) {
-        long n = 543_432_655_065_543_432L;
+        long n = 543_432L;
         int[] array = convertirArray(n);
         int variableCualquiera = cifrasNumero(array);
 
         System.out.println(Arrays.toString(array));
         System.out.println(variableCualquiera);
+
+        String cadena = "Hola cara-pan";
+        char[] cadenaCompleta = cadena.toCharArray();
+        String[] separado = new String[3];
+        for (int i = 0; i < separado.length; i++) {
+            String variableProvis = "";
+            for (int j = 0; j < cadenaCompleta.length; j++) {
+                if (cadenaCompleta[j] == ' ' || cadenaCompleta[j] == '-') {
+                    separado[i] = variableProvis;
+                    variableProvis = "";
+                } else {
+                    variableProvis = variableProvis + cadenaCompleta[i];
+                }
+            }
+        }
 
         String resultado = "";
 
