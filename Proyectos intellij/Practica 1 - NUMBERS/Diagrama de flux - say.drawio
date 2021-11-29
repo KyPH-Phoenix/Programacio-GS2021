@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-11-29T21:17:19.553Z" agent="5.0 (Windows)" etag="X9G0uxZ2KQxoJzuOGHFh" version="15.8.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-29T23:15:38.147Z" agent="5.0 (Windows)" etag="8Z8HmjCDLIM6WqX6e1Cn" version="15.8.3" type="github">
   <diagram id="c4kQ62IUwrZo4tqciYfw" name="Page-1">
-    <mxGraphModel dx="2012" dy="659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2249" dy="791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -156,6 +156,12 @@
         </mxCell>
         <mxCell id="O-nu7JSQrFN56u6NZ3is-49" value="End" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fillColor=default;align=center;" vertex="1" parent="1">
           <mxGeometry x="90" y="870" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="O-nu7JSQrFN56u6NZ3is-51" value="&lt;div&gt;Si&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="240" y="590" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="O-nu7JSQrFN56u6NZ3is-52" value="&lt;div&gt;No&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="110" y="640" width="30" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
