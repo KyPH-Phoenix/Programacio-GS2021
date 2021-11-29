@@ -22,43 +22,72 @@ public class Numbers {
     }
 
     public static long words(String s) {
+        // Con esta variable sacamos la ultima posición de letra del string.
         int longitud = s.length() - 1;
 
+        // Aquí se eliminan "and" y "-".
         s = s.replace(" and", "");
         s = s.replace("-", " ");
         s = s.toLowerCase();
 
+        // Una vez hecho eso, se separa la string en un array donde haya espacios.
         String[] cadenaSeparada = s.split(" ");
 
+        // Declaración de variables.
         long numero = 0;
         long resultado = 0;
 
+        // En este ciclo vamos creando el resultado con grupos de 3
         for (int i = 0; i < cadenaSeparada.length; i++) {
+
+            // Si la palabra no es una potencia (thousand, million, etc.) hace centenas.
             if (!potencias(cadenaSeparada[i])) {
-                if (cadenaSeparada[i].equals("hundred")) {
-                    numero *= 100;
-                } else if (cadenaSeparada[i].endsWith("ty")) {
-                    numero += tenMultiplesWords(cadenaSeparada[i]);
-                } else {
-                    numero += zeroToNineteenWords(cadenaSeparada[i]);
-                }
+                numero = letrasCentenas(numero, cadenaSeparada, i);
+
+                // Si la palabra ES una potencia entonces suma numero a resultado y le añade 3 ceros.
             } else {
                 resultado += multiplicarPorPotencia(numero, cadenaSeparada[i]);
                 numero = 0;
             }
         }
 
+        // Aquí se añade el ultimo grupo de 3, ya que no tiene una potencia.
         resultado += numero;
 
+        // Devuelve el resultado
         return resultado;
     }
 
+    // Esta función convierte grupos de 3 de letras a numeros.
+    private static long letrasCentenas(long numero, String[] cadenaSeparada, int i) {
+        // Si el valor de la variable es hundred, multiplica lo que ya tiene en numeros por 100.
+        if (cadenaSeparada[i].equals("hundred")) {
+            numero *= 100;
+
+            // Si acaba en "ty" significa que es un multiplo de diez y lo trata como tal.
+        } else if (cadenaSeparada[i].endsWith("ty")) {
+            numero += tenMultiplesWords(cadenaSeparada[i]);
+
+            // Por ultimo, si no es ninguna de las otras lo trata como un numero normal.
+        } else {
+            numero += zeroToNineteenWords(cadenaSeparada[i]);
+        }
+
+        // Devuelve el resultado.
+        return numero;
+    }
+
+    // Fncion para pasar de letras (one, two, three, ...) a numeros.
     private static int zeroToNineteenWords(String word) {
+        // Array con los valores.
         String[] array0_19 = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven",
                 "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
 
+        // Variable para posición.
         int pos = 0;
 
+        // En este ciclo se determina la posición de la variable introducida. Una vez hecho eso, sale del bucle 
+        // y devuelve la posición.
         while (pos < array0_19.length) {
             if (word.equals(array0_19[pos])) {
                 break;
@@ -66,14 +95,19 @@ public class Numbers {
             pos++;
         }
 
+        // Devuelve posición.
         return pos;
     }
 
+    // Funcion para pasar de letras a numeros los multiplos de 10.
     private static int tenMultiplesWords(String word) {
+        // Array que contiene los posibles valores.
         String[] array20_90 = {"twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
+        // Variable de posición
         int pos = 0;
 
+        // Ciclo que determina el valor del string segun su posición en el array.
         while (pos < array20_90.length) {
             if (word.equals(array20_90[pos])) {
                 break;
@@ -81,32 +115,43 @@ public class Numbers {
             pos++;
         }
 
+        // Duelve el resultado. En este caso, suma 2 a la posición porque los valores empiezan en "twenty",
+        // luego los multiplica por 10 porque son, valga la redundancia, multiplos de 10.
         return (pos + 2) * 10;
     }
 
+    // Esta función determina si un valor del array es una potencia (thousand, million, etc.).
     private static boolean potencias(String word) {
+        // Array con los posibles valores.
         String[] sufijos = {"", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"};
 
+        // Variable booleana que devolvera la función.
         boolean potencia = false;
 
+        // Si la variable introducida es igual a alguno de los valores del array entonces potencia = true.
         for (int i = 0; i < sufijos.length; i++) {
             if (word.equals(sufijos[i])) {
                 potencia = true;
             }
         }
 
+        // Devuelve el resultado.
         return potencia;
     }
 
+    // Esta función multiplica el numero por la potencia en cuestión (thousand, million, etc.).
     private static long multiplicarPorPotencia(long numero, String potencia) {
+        // Array con los posibles valores.
         String[] sufijos = {"", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"};
 
+        // En este ciclo se determina la potencia correspondiente y se multiplica el numero por 10^potencia.
         for (int i = 0; i < sufijos.length; i++) {
             if (sufijos[i].equals(potencia)) {
                 numero *= Math.pow(10, i * 3);
             }
         }
 
+        // Devuelve el resultado.
         return numero;
     }
 
@@ -134,10 +179,11 @@ public class Numbers {
                 resultado.append(sufijos[fase]);
             }
 
+            // Estas lineas quedan anuladas porque hay una contradicción en los tests.
             // Si después del thousand no hay centenas, pero si decenas o unidades, entonces pone "and".
-            if (fase == 1 && (array[array.length - 3] == 0 && array[array.length - 1] + array[array.length - 2] != 0)) {
-                resultado.append("and ");
-            }
+                /*if (fase == 1 && (array[array.length - 3] == 0 && array[array.length - 1] + array[array.length - 2] != 0)) {
+                    resultado.append("and ");
+                }*/
 
             // Pasamos a la siguiente fase y calculamos la longitud del numero que nos falta.
             fase--;

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Prueba2 {
     public static void main(String[] args) {
-        String cadena = "One million and one";
+        String cadena = "Zero";
 
         int longitud = cadena.length() - 1;
 
@@ -20,9 +20,6 @@ public class Prueba2 {
 
         long numero = 0;
         long resultado = 0;
-
-        boolean loquesea = potencias(cadenaSeparada[1]);
-        System.out.println(loquesea);
 
         for (int i = 0; i < cadenaSeparada.length; i++) {
             if (!potencias(cadenaSeparada[i])) {
