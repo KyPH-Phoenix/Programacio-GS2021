@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-11-29T21:16:13.131Z" agent="5.0 (Windows)" etag="IW4QWqfyIfL0yIgilNBj" version="15.8.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-29T21:17:19.553Z" agent="5.0 (Windows)" etag="X9G0uxZ2KQxoJzuOGHFh" version="15.8.3" type="github">
   <diagram id="c4kQ62IUwrZo4tqciYfw" name="Page-1">
     <mxGraphModel dx="2012" dy="659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -55,8 +55,8 @@
         <mxCell id="O-nu7JSQrFN56u6NZ3is-17" value="&lt;div align=&quot;left&quot;&gt;Proceso&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="-140" y="135" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="O-nu7JSQrFN56u6NZ3is-18" value="&lt;div align=&quot;left&quot;&gt;Operación&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="-140" y="175" width="70" height="20" as="geometry" />
+        <mxCell id="O-nu7JSQrFN56u6NZ3is-18" value="Función" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-140" y="175" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="O-nu7JSQrFN56u6NZ3is-22" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;fillColor=default;align=left;" vertex="1" parent="1">
           <mxGeometry x="-190" y="210" width="40" height="30" as="geometry" />
