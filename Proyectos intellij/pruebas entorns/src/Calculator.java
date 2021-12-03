@@ -1,20 +1,6 @@
 public class Calculator {
 
-    public static void main(String[] args) {
-        StringBuilder new = resultado()
-        String resultado = "";
-        String hola = "hola";
-        resultado = resultado + hola + " que tal";
-        System.out.println(resultado);
-        String tuMama = ". Me cago en tu madre";
-        resultado = resultado + tuMama;
-        System.out.println("------------");
-        System.out.println(resultado);
-
-    }
-
-
-    static int add(int x, int y) {
+    /*static int add(int x, int y) {
         return x + y;
     }
 
@@ -44,13 +30,13 @@ public class Calculator {
 
     static double multiply(double x, double y) {
         return x * y;
-    }
+    }*/
 
     static double divide(double x, double y) {
         return x / y;
     }
 
-    static double power(double b, double e) {
+    /*static double power(double b, double e) {
         double result = b;
         if (e == 0) {
             result = 1;
@@ -60,5 +46,5 @@ public class Calculator {
             }
         }
         return result;
-    }
+    }*/
 }
