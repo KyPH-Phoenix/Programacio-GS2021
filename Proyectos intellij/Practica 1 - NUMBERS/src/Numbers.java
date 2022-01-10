@@ -22,9 +22,6 @@ public class Numbers {
     }
 
     public static long words(String s) {
-        // Con esta variable sacamos la ultima posición de letra del string.
-        int longitud = s.length() - 1;
-
         // Aquí se eliminan "and" y "-".
         s = s.replace(" and", "");
         s = s.replace("-", " ");
@@ -179,11 +176,12 @@ public class Numbers {
                 resultado.append(sufijos[fase]);
             }
 
-            // Estas lineas quedan anuladas porque hay una contradicción en los tests.
-            // Si después del thousand no hay centenas, pero si decenas o unidades, entonces pone "and".
-                /*if (fase == 1 && (array[array.length - 3] == 0 && array[array.length - 1] + array[array.length - 2] != 0)) {
-                    resultado.append("and ");
-                }*/
+            // Estas lineas quedan anuladas porque hay una contradicción en los tests. Igualmente las dejo comentadas
+            // para que se vea como debería ser
+                // Si después del thousand no hay centenas, pero si decenas o unidades, entonces pone "and".
+                    /*if (fase == 1 && (array[array.length - 3] == 0 && array[array.length - 1] + array[array.length - 2] != 0)) {
+                        resultado.append("and ");
+                    }*/
 
             // Pasamos a la siguiente fase y calculamos la longitud del numero que nos falta.
             fase--;
@@ -212,7 +210,7 @@ public class Numbers {
         if (longitudNumero % 3 == 0) {
             // Unicamente si hay un valor en la posicion de las centenas añade "hundred".
             if (array[array.length - longitudNumero] != 0) {
-                centenas = zeroToNineteen((int) array[array.length - longitudNumero]) + " hundred";
+                centenas = zeroToNineteen(array[array.length - longitudNumero]) + " hundred";
                 resultado = centenas;
 
                 // Añade un and si los digitos de despues no son 0.
@@ -252,7 +250,7 @@ public class Numbers {
 
             // Finalmente añade las unidades en caso de que el valor sea diferente a 0.
             if (array[array.length - longitudNumero] != 0 && longitudNumero % 3 == 1) {
-                unidades = zeroToNineteen((int) array[array.length - longitudNumero]);
+                unidades = zeroToNineteen(array[array.length - longitudNumero]);
             }
             resultado = resultado + unidades;
         }
@@ -274,7 +272,7 @@ public class Numbers {
             }
         }
 
-        // Devuelve el resultado
+        // Devuelve elp resultado
         return longitudNumero;
     }
 
