@@ -16,6 +16,9 @@ public class Main {
                     mostrarDatosMes();
                     break;
                 case 2:
+                    diferenciaMes();
+                    break;
+                case 3:
                     System.out.println("¡Hasta la próxima!");
                     return;
                 default:
@@ -68,7 +71,8 @@ public class Main {
         System.out.println();
         System.out.println("--- MENÚ PRINCIPAL ---");
         System.out.println("    1. Datos del mes");
-        System.out.println("    2. Salir");
+        System.out.println("    2. Diferencia entre meses");
+        System.out.println("    3. Salir");
         System.out.println();
         System.out.print("¿Qué desea hacer? ");
 
@@ -97,6 +101,7 @@ public class Main {
             if (mesures[i].data.getMonthValue() < mes) {
                 continue;
             }
+
             if (mesures[i].data.getMonthValue() > mes) {
                 break;
             }
@@ -131,4 +136,10 @@ public class Main {
         sc.nextLine();
         System.out.println("\n\n");
     }
+
+    static void diferenciaMes() {
+
+    }
+
+
 }
