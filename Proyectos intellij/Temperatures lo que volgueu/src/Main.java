@@ -4,8 +4,11 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
+    static DadesDia[] mesures;
 
     public static void main(String[] args) {
+        procesaDatos();
+
         while (true) {
             int opcion = menuPrincipal();
             switch (opcion) {
@@ -21,9 +24,47 @@ public class Main {
         }
     }
 
+    static void procesaDatos() {
+
+        String[] dias = Temps.data.split("\n");
+
+        mesures = new DadesDia[dias.length - 1];
+
+        for (int i = 1; i < mesures.length; i++) {
+
+            String[] diasSeparados = dias[i].split(",", -1);
+            DadesDia dadesDia = new DadesDia();
+
+            dadesDia.data = LocalDate.parse(diasSeparados[3]);
+
+            if (diasSeparados[4].length() > 0) {
+                dadesDia.precip = Double.parseDouble(diasSeparados[4]);
+                dadesDia.precipExists = true;
+            }
+
+            if (diasSeparados[5].length() > 0) {
+                dadesDia.tmpAvg = Integer.parseInt(diasSeparados[5]);
+                dadesDia.tmpAvgExists = true;
+            }
+
+            if (diasSeparados[6].length() > 0) {
+                dadesDia.tmpMax = Integer.parseInt(diasSeparados[6]);
+                dadesDia.tmpMaxExists = true;
+            }
+
+            if (diasSeparados[7].length() > 0) {
+                dadesDia.tmpMin = Integer.parseInt(diasSeparados[7]);
+                dadesDia.tmpMinExists = true;
+            }
+
+            mesures[i - 1] = dadesDia;
+        }
+    }
+
     static int menuPrincipal() {
         int opcion;
 
+        // Preguntar la opción al usuario.
         System.out.println();
         System.out.println("--- MENÚ PRINCIPAL ---");
         System.out.println("    1. Datos del mes");
@@ -35,17 +76,16 @@ public class Main {
 
         System.out.println();
 
+        // Devuelve la opción.
         return opcion;
     }
 
     static void mostrarDatosMes() {
-        System.out.print("¿De que mes quieres consultar los datos?");
+        System.out.print("¿De que mes quieres consultar los datos? ");
         int mes = Integer.parseInt(sc.nextLine());
 
-        String[] dias = Temps.data.split("\n");
-
-        int contPrcp = 0;
-        double totalPrcp = 0;
+        int contPrecip = 0;
+        double totalPrecip = 0;
         int contTmpAvg = 0;
         double totalTmpAvg = 0;
         int contTmpMin = 0;
@@ -53,48 +93,42 @@ public class Main {
         int contTmpMax = 0;
         double totalTmpMax = 0;
 
-        for (int i = 0; i < dias.length; i++) {
-            String[] elementosSeparados = dias[i].split(",");
-
-            if (elementosSeparados.length < 8) {
+        for (int i = 0; i < mesures.length; i++) {
+            if (mesures[i].data.getMonthValue() < mes) {
                 continue;
             }
-
-            LocalDate fecha = LocalDate.parse(elementosSeparados[3]);
-
-            if (fecha.getMonthValue() != mes) {
-                continue;
+            if (mesures[i].data.getMonthValue() > mes) {
+                break;
             }
 
-            if (!Objects.equals(elementosSeparados[4], "")) {
-                contPrcp++;
-                totalPrcp += Double.parseDouble(elementosSeparados[4]);
+            if (mesures[i].precipExists) {
+                contPrecip++;
+                totalPrecip += mesures[i].precip;
             }
 
-            if (!Objects.equals(elementosSeparados[5], "")) {
+            if (mesures[i].tmpAvgExists) {
                 contTmpAvg++;
-                totalTmpAvg += Double.parseDouble(elementosSeparados[5]);
+                totalTmpAvg += mesures[i].tmpAvg;
             }
 
-            if (!Objects.equals(elementosSeparados[6], "")) {
+            if (mesures[i].tmpMaxExists) {
                 contTmpMax++;
-                totalTmpMax += Double.parseDouble(elementosSeparados[6]);
+                totalTmpMax += mesures[i].tmpMax;
             }
 
-            if (!Objects.equals(elementosSeparados[7], "")) {
+            if (mesures[i].tmpMinExists) {
                 contTmpMin++;
-                totalTmpMin += Double.parseDouble(elementosSeparados[7]);
+                totalTmpMin += mesures[i].tmpMin;
             }
         }
 
-        double mediaPrcp = totalPrcp / contPrcp;
-        double mediaTmpAvg = totalTmpAvg / contTmpAvg;
-        double mediaTmpMax = totalTmpMax / contTmpMax;
-        double mediaTmpMin = totalTmpMin / contTmpMin;
+        System.out.printf("\nLa precipitación media del mes fue de %.2f galones\n", totalPrecip / contPrecip);
+        System.out.printf("La temperatura media del mes fue de %.2f farenheit\n", totalTmpAvg / contTmpAvg);
+        System.out.printf("La temperatura máxima media del mes fue %.2f farenheit\n", totalTmpMax / contTmpMax);
+        System.out.printf("La temperatura mínima media del mes fue %.2f farenheit\n", totalTmpMin / contTmpMin);
 
-        System.out.printf("\nLa precipitación media del mes fue de %.2f galones\n", mediaPrcp);
-        System.out.printf("La temperatura media del mes fue de %.2f farenheit\n", mediaTmpAvg);
-        System.out.printf("La temperatura máxima media del mes fue %.2f farenheit\n", mediaTmpMax);
-        System.out.printf("La temperatura mínima media del mes fue %.2f farenheit\n", mediaTmpMin);
+        System.out.println("\nPulsa ENTER para continuar: ");
+        sc.nextLine();
+        System.out.println("\n\n");
     }
 }
