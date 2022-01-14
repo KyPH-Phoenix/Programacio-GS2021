@@ -65,7 +65,12 @@ public class Main {
             String[] diasSeparados = dias[i].split(",", -1);
             DadesDia dadesDia = new DadesDia();
 
-            dadesDia.data = LocalDate.parse(diasSeparados[3]);
+            if (diasSeparados[i].length() < 8)
+                continue;
+
+            if (diasSeparados[3].length() > 0) {
+                dadesDia.data = LocalDate.parse(diasSeparados[3]);
+            }
 
             if (diasSeparados[4].length() > 0) {
                 dadesDia.precip = Double.parseDouble(diasSeparados[4]);
