@@ -6,6 +6,7 @@ public class Jugador {
     int puntsVidaMax;
     int puntsAtac;
     int puntsDefensa;
+    int exit;
 
     // Constructor
     public Jugador(String nom, int puntsAtac, int puntsDefensa) {
@@ -16,6 +17,7 @@ public class Jugador {
         this.puntsVidaMax = 10;
         this.puntsAtac = puntsAtac;
         this.puntsDefensa = puntsDefensa;
+        this.exit = 0;
     }
 
     void recuperaVida(int punts) {
@@ -35,7 +37,7 @@ public class Jugador {
     }
 
     void penalitzacio(int punts) {
-        if (Math.random() == 0) {
+        if (Math.random() < 0.5) {
             this.puntsAtac -= punts;
             if (this.puntsAtac <= 0)
                 this.puntsAtac = 1;
