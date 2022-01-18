@@ -1,0 +1,6 @@
+CREATE DATABASE entorns;
+CREATE USER 'admin'@'%' IDENTIFIED BY 'esliceu';
+GRANT SELECT ON * . * TO 'admin'@'%';
+
+
+
