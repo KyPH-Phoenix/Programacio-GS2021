@@ -32,7 +32,6 @@ public class Main {
     }
 
     static void ronda(Jugador jugador1, int estr1, Jugador jugador2, int estr2) {
-
         Jugador[] estrategia = new Jugador[4];
 
         if (estr1 == estr2) {
