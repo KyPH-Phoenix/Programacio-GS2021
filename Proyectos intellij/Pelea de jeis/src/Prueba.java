@@ -8,7 +8,7 @@ public class Prueba {
         long j = 0;
         long totalSaltos = 0;
 
-        for (long objetivo = 20; objetivo != j; i++) {
+        /*for (long objetivo = 15; objetivo != j; i++) {
             totalMayor = 0;
             totalMenor = 0;
             for (j = 0; objetivo != totalMayor && objetivo != totalMenor; j++) {
@@ -52,5 +52,10 @@ public class Prueba {
             if (contadorMayor > totalMayor)
                 totalMayor = contadorMayor;
         }*/
+
+        for (int k = 0; k < 10; k++) {
+            int a = ((int) (Math.random() * 4)) + 1;
+            System.out.println(a);
+        }
     }
 }
