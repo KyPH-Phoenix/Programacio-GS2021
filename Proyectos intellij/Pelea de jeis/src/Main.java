@@ -22,8 +22,8 @@ public class Main {
         Jugador jugador2 = asignaRaza(razaBot);
 
         // Asigna el nombre correcto a los jugadores
-        jugador1.nom = nom + " (" + jugador1.nom + ")";
-        jugador2.nom = "SkyNet (" + jugador2.nom + ")";
+        jugador1.asignaNom(nom);
+        jugador2.asignaNom("SkyNet");
 
         // Variables de victorias
         int victorias1 = 0;
@@ -61,7 +61,7 @@ public class Main {
                     penaliz1--;
                     if (penaliz1 == 0) {
                         penaliz1 = 6;
-                        quitarPenalizacion(jugador1);
+                        jugador1.quitarPenalizacion();
                     }
                 }
 
@@ -69,7 +69,7 @@ public class Main {
                     penaliz2--;
                     if (penaliz2 == 0) {
                         penaliz2 = 6;
-                        quitarPenalizacion(jugador2);
+                        jugador2.quitarPenalizacion();
                     }
                 }
 
@@ -100,26 +100,13 @@ public class Main {
             // Resetea stats
             jugador1 = asignaRaza(raza - 1);
             jugador2 = asignaRaza(razaBot);
-            jugador1.nom = nom + " (" + jugador1.nom + ")";
-            jugador2.nom = "SkyNet (" + jugador2.nom + ")";
+            jugador1.asignaNom(nom);
+            jugador2.asignaNom("SkyNet");
         }
 
         // Imprime el numero de victorias de cada jugador
         System.out.printf("\n%s ha ganado %d veces\n", jugador1.nom, victorias1);
         System.out.printf("\n%s ha ganado %d veces\n", jugador2.nom, victorias2);
-    }
-
-    // Funcion para quitar la penalizacion
-    static void quitarPenalizacion(Jugador jugador) {
-        if (jugador.tipoPenalizacion == 0) {
-            jugador.puntsAtac += jugador.puntosPenalizados;
-        } else {
-            jugador.puntsDefensa += jugador.puntosPenalizados;
-        }
-
-        jugador.penalizado = false;
-        jugador.puntosPenalizados = 0;
-        System.out.printf("\nLa penalizacion que afectaba a %s ha dejado de hacer efecto\n", jugador.nom);
     }
 
     // Funcion para asignar la raza al jugador

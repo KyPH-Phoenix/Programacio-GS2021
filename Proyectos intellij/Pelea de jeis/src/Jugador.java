@@ -37,7 +37,7 @@ public class Jugador {
 
     // Funcion para restar vida al jugador
     void restaVida(int punts) {
-        this.puntsVida -= punts;º
+        this.puntsVida -= punts;
         if (this.puntsVida < 0)
             this.puntsVida = 0;
         System.out.printf("\n%s pierde %d puntos de vida.\n", this.nom, punts);
@@ -58,16 +58,24 @@ public class Jugador {
             this.puntosPenalizados = punts;
             if (Math.random() < 0.5) {
                 this.puntsAtac -= punts;
-                if (this.puntsAtac <= 0)
+                if (this.puntsAtac <= 0) {
+                    // Los puntos penalizados no seran todos los que se resten al prinipio si estos son menor o
+                    // igual que 0;
+                    this.puntosPenalizados = this.puntosPenalizados - 1 - Math.abs(this.puntsAtac);
                     this.puntsAtac = 1;
+                }
                 this.tipoPenalizacion = 0;
-                System.out.printf("\n%s sufre un penalizacion al ataque de %d puntos.\n", this.nom, punts);
+                System.out.printf("\n%s sufre un penalizacion al ataque de %d puntos.\n", this.nom, this.puntosPenalizados);
             } else {
                 this.puntsDefensa -= punts;
-                if (this.puntsDefensa <= 0)
+                if (this.puntsDefensa <= 0) {
+                    // Los puntos penalizados no seran todos los que se resten al prinipio si estos son menor o
+                    // igual que 0;
+                    this.puntosPenalizados = this.puntosPenalizados - 1 - Math.abs(this.puntsDefensa);
                     this.puntsDefensa = 1;
+                }
                 this.tipoPenalizacion = 1;
-                System.out.printf("\n%s sufre un penalizacion a la defensa de %d puntos.\n", this.nom, punts);
+                System.out.printf("\n%s sufre un penalizacion a la defensa de %d puntos.\n", this.nom, this.puntosPenalizados);
             }
 
             // Esta variable determina si el jugador esta o no penalizado.
@@ -85,5 +93,23 @@ public class Jugador {
         } else {
             this.exit = ((int) (Math.random() * (this.puntsAtac + 1)));
         }
+    }
+
+    // Funcion para quitar la penalizacion
+    void quitarPenalizacion() {
+        if (this.tipoPenalizacion == 0) {
+            this.puntsAtac += this.puntosPenalizados;
+        } else {
+            this.puntsDefensa += this.puntosPenalizados;
+        }
+
+        this.penalizado = false;
+        this.puntosPenalizados = 0;
+        System.out.printf("\nLa penalizacion que afectaba a %s ha dejado de hacer efecto\n", this.nom);
+    }
+
+    // Funcion para asignar el nombre.
+    void asignaNom(String nom) {
+        this.nom = nom + " (" + this.nom + ")";
     }
 }
