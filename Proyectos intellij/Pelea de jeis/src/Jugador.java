@@ -27,7 +27,7 @@ public class Jugador {
     }
 
     void restaVida(int punts) {
-        this.puntsVida -= punts;
+        this.puntsVida -= punts;º
         if (this.puntsVida < 0)
             this.puntsVida = 0;
     }
