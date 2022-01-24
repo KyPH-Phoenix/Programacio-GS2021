@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
    config.vm.synced_folder "./synqed", "/vagrant_data"
-   config.vm.synced_folder "./html", "/var/www/html/entorns"
+   config.vm.synced_folder "./php", "/var/www/html/entorns"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -71,11 +71,15 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
+    apt-get install -y php
     DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server
     apt-get install -y mysql-client
     apt-get install -y apache2
     apt-get install -y libapache2-mod-php
     apt-get install -y php-mysql
     mysql < /vagrant_data/mysqlConfig
+    service apache2 restart
+    service mysql restart
+    
   SHELL
 end

@@ -1,6 +1,3 @@
 CREATE DATABASE entorns;
-CREATE USER 'admin'@'%' IDENTIFIED BY 'esliceu';
-GRANT SELECT ON * . * TO 'admin'@'%';
-
-
-
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'esliceu';
+GRANT ALL PRIVILEGES ON * . * TO 'admin'@'localhost';
