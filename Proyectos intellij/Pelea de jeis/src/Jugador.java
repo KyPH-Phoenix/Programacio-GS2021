@@ -11,14 +11,45 @@ public class Jugador {
     int tipoPenalizacion;
     int puntosPenalizados;
 
+    // Getters y setters que se necesitan en el main
+    public String getNom() {
+        return nom;
+    }
+
+    public int getNivell() {
+        return nivell;
+    }
+
+    public void setNivell(int nivell) {
+        this.nivell = nivell;
+    }
+    public int getPuntsVida() {
+        return puntsVida;
+    }
+
+    public int getExit() {
+        return exit;
+    }
+
+    public boolean isPenalizado() {
+        return penalizado;
+    }
+
+    public int getPuntsExp() {
+        return puntsExp;
+    }
+
+    public void setPuntsExp(int puntsExp) {
+        this.puntsExp = puntsExp;
+    }
 
     // Constructor
     public Jugador(String nom, int puntsAtac, int puntsDefensa) {
         this.nom = nom;
         this.nivell = 0;
         this.puntsExp = 0;
-        this.puntsVida = 20;
-        this.puntsVidaMax = 20;
+        this.puntsVida = 10;
+        this.puntsVidaMax = 10;
         this.puntsAtac = puntsAtac;
         this.puntsDefensa = puntsDefensa;
         this.exit = 0;
@@ -111,5 +142,25 @@ public class Jugador {
     // Funcion para asignar el nombre.
     void asignaNom(String nom) {
         this.nom = nom + " (" + this.nom + ")";
+    }
+
+    // Funcion para aumentar experiencia
+    void aumentaExp() {
+        this.puntsExp += 25;
+        if (this.puntsExp >= 100) {
+            System.out.printf("\n¡%s ha subido de nivel!\n\n", this.nom);
+            mostraEstadistiques();
+            this.nivell++;
+            this.puntsExp = this.puntsExp - 100;
+            this.ajustarStats();
+        }
+    }
+
+    // Funcion para subir stats de acuerdo al nivel
+    void ajustarStats() {
+        this.puntsVida += this.nivell * 2;
+        this.puntsVidaMax += this.nivell * 2;
+        this.puntsAtac += this.nivell;
+        this.puntsDefensa += this.nivell;
     }
 }

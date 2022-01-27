@@ -1,3 +1,26 @@
+/*
+-------¡¡¡IMPORTANTE!!!-------
+
+Hay algunos procedimientos del programa que eran un poco ambiguos en el enunciado y voy a especificar a continuación como
+los he hecho yo.
+
+1. La penalizacion solo se aplica si el jugador que hace la maniobra saca mas de 0 y si el jugador que va a ser penalizado
+    no está ya penalizado. En caso de que eso ocurra el programa muestra un mensaje diciendo que no se puede penalizar.
+
+2. La ganancia de experiencia se lleva a cabo tras cada combate. He decidido darle a cada jugador 25xp tras cada combate,
+    sin importar cual de los dos gana o pierde.
+
+3. En cuanto a los valores de ataque y defensa, solo he usado el valor de defensa para la estrategia "defensa". El resto
+    de estrategias utilizan el valor de "ataque" para sacar el resultado de daño y/o penalización.
+
+4. El juego dura 10 peleas de 10 rondas cada una. Si al cabo de 10 turnos/rondas en una pelea aun no hay un ganador se
+    determina que la pelea ha acabado en empate y ningun jugador gana puntos de victoria.
+
+5. El programa determina que jugador gana cada pelea pero no determina quien ha ganado el juego. Igualmente, al final del
+    programa se imprime por pantalla cuantas rondas ha ganado cada uno asi que el jugador es capaz de ver si ha ganado,
+    perdido o empatado.
+ */
+
 import java.util.Scanner;
 
 public class Main {
@@ -46,9 +69,9 @@ public class Main {
 
                 // El jugador y la máquina eligen estrategia
                 int estr1 = elegirEstr();
-                System.out.printf("\n%s ha elejido %s\n", jugador1.nom, estrategia[estr1 - 1]);
+                System.out.printf("\n%s ha elejido %s\n", jugador1.getNom(), estrategia[estr1 - 1]);
                 int estr2 = estrRandom();
-                System.out.printf("\n%s ha elejido %s\n", jugador2.nom, estrategia[estr2 - 1]);
+                System.out.printf("\n%s ha elejido %s\n", jugador2.getNom(), estrategia[estr2 - 1]);
 
                 // Se tiran las monedas
                 jugador1.tirarMonedas(estr1);
@@ -57,7 +80,7 @@ public class Main {
                 ronda(jugador1, estr1, jugador2, estr2);
 
                 // Los siguientes condicionales quitan la penalizacion de los jugadores o pasan los turnos.
-                if (jugador1.penalizado) {
+                if (jugador1.isPenalizado()) {
                     penaliz1--;
                     if (penaliz1 == 0) {
                         penaliz1 = 6;
@@ -65,7 +88,7 @@ public class Main {
                     }
                 }
 
-                if (jugador2.penalizado) {
+                if (jugador2.isPenalizado()) {
                     penaliz2--;
                     if (penaliz2 == 0) {
                         penaliz2 = 6;
@@ -74,13 +97,13 @@ public class Main {
                 }
 
                 // Termina el combate si la vida de uno de los dos jugadores llega a 0
-                if (jugador1.puntsVida == 0) {
+                if (jugador1.getPuntsVida() <= 0) {
                     ganador = 2;
                     victorias2++;
                     break;
                 }
 
-                if (jugador2.puntsVida == 0) {
+                if (jugador2.getPuntsVida() <= 0) {
                     ganador = 1;
                     victorias1++;
                     break;
@@ -90,24 +113,49 @@ public class Main {
             System.out.printf("\nEl combate %d ha finalizado.\n", i + 1);
 
             if (ganador == 1) {
-                System.out.printf("\nGanador del combate: %s\n", jugador1.nom);
+                System.out.printf("\nGanador del combate: %s\n", jugador1.getNom());
             } else if (ganador == 2) {
-                System.out.printf("\nGanador del combate: %s\n", jugador2.nom);
+                System.out.printf("\nGanador del combate: %s\n", jugador2.getNom());
             } else {
                 System.out.println("\nHa habido un empate.");
             }
 
-            // Resetea stats
-            jugador1 = asignaRaza(raza - 1);
-            jugador2 = asignaRaza(razaBot);
-            jugador1.asignaNom(nom);
-            jugador2.asignaNom("SkyNet");
+            // Aumenta la experiencia de cada jugador despues del combate
+            jugador1.aumentaExp();
+            jugador2.aumentaExp();
+
+            // Se resetean los stats de cada jugador tras el combate
+            jugador1 = resetStats(jugador1, raza - 1, nom);
+            jugador2 = resetStats(jugador2, razaBot, "SkyNet");
         }
 
         // Imprime el numero de victorias de cada jugador
-        System.out.printf("\n%s ha ganado %d veces\n", jugador1.nom, victorias1);
-        System.out.printf("\n%s ha ganado %d veces\n", jugador2.nom, victorias2);
+        System.out.printf("\n%s ha ganado %d veces\n", jugador1.getNom(), victorias1);
+        System.out.printf("\n%s ha ganado %d veces\n", jugador2.getNom(), victorias2);
     }
+
+    // Funcion para resetear stats
+    static Jugador resetStats(Jugador jugador, int raza, String nom) {
+        // Se guardan los valores de nivel y exp
+        int nivell = jugador.getNivell();
+        int exp = jugador.getPuntsExp();
+
+        // Luego se asignan los valores predeterminados de la raza
+        jugador = asignaRaza(raza);
+
+        // Se vuelven a asignar los valores previos de xp y nivel
+        jugador.setPuntsExp(exp);
+        jugador.setNivell(nivell);
+
+        // Se ajustan los stats (si ha habido subida de nivel)
+        jugador.ajustarStats();
+
+        // Se pone otra vez el nombre del jugador.
+        jugador.asignaNom(nom);
+
+        return jugador;
+    }
+
 
     // Funcion para asignar la raza al jugador
     static Jugador asignaRaza(int raza) {
@@ -165,29 +213,29 @@ public class Main {
              */
             if (estrategia[0] != null) {
                 if (estrategia[1] != null) {
-                    estrategia[1].recuperaVida(estrategia[1].exit);
+                    estrategia[1].recuperaVida(estrategia[1].getExit());
                 } else if (estrategia[2] != null) {
-                    estrategia[2].restaVida(estrategia[0].exit);
+                    estrategia[2].restaVida(estrategia[0].getExit());
                 } else {
-                    estrategia[3].restaVida(estrategia[0].exit);
+                    estrategia[3].restaVida(estrategia[0].getExit());
                 }
             } else if (estrategia[1] != null) {
                 if (estrategia[2] != null) {
-                    estrategia[1].restaVida(estrategia[2].exit * 2);
+                    estrategia[1].restaVida(estrategia[2].getExit() * 2);
                 } else {
-                    estrategia[1].penalitzacio(estrategia[3].exit);
+                    estrategia[1].penalitzacio(estrategia[3].getExit());
                 }
             } else {
-                estrategia[2].penalitzacio(estrategia[3].exit);
+                estrategia[2].penalitzacio(estrategia[3].getExit());
             }
 
             // Finalmente se comparan los nombres y se asignan los valores resultantes al jugador correspondiente.
             for (int i = 0; i < estrategia.length; i++) {
-                if (estrategia[i] != null && estrategia[i].nom.equals(jugador1.nom)) {
+                if (estrategia[i] != null && estrategia[i].getNom().equals(jugador1.getNom())) {
                     jugador1 = estrategia[i];
                 }
 
-                if (estrategia[i] != null && estrategia[i].nom.equals(jugador2.nom)) {
+                if (estrategia[i] != null && estrategia[i].getNom().equals(jugador2.getNom())) {
                     jugador2 = estrategia[i];
                 }
             }
@@ -197,18 +245,18 @@ public class Main {
     // Funcion que recoge los casos en los que las estrategias son iguales.
     static void estrIguales(Jugador jugador1, int estr1, Jugador jugador2) {
         if (estr1 == 1 || estr1 == 3) {
-            jugador1.restaVida(jugador2.exit);
-            jugador2.restaVida(jugador1.exit);
+            jugador1.restaVida(jugador2.getExit());
+            jugador2.restaVida(jugador1.getExit());
         }
 
         if (estr1 == 2) {
-            jugador1.recuperaVida(jugador1.exit);
-            jugador2.recuperaVida(jugador2.exit);
+            jugador1.recuperaVida(jugador1.getExit());
+            jugador2.recuperaVida(jugador2.getExit());
         }
 
         if (estr1 == 4) {
-            jugador1.penalitzacio(jugador2.exit);
-            jugador2.penalitzacio(jugador1.exit);
+            jugador1.penalitzacio(jugador2.getExit());
+            jugador2.penalitzacio(jugador1.getExit());
         }
     }
 
