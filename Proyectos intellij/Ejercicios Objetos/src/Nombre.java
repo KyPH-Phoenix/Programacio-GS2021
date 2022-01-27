@@ -20,7 +20,6 @@ public class Nombre {
                 result += valorDigitRoma(s.charAt(i));
             }
         }
-        System.out.println(result);
         this.valor = result;
     }
 

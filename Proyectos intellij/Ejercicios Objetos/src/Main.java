@@ -1,9 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        Peix p1 = new Peix("Manolo");
-        Peix p2 = new Peix(p1);
-        Peix p3 = new Peix(p2);
+        Nombre n1 = new Nombre("IV");
+        Nombre n2 = new Nombre("XV");
 
-        System.out.printf("%d, %d, %d", p1.count, p2.count, p3.count);
+        System.out.println(n1.bin());
+        System.out.println(n2.hex());
     }
 }
