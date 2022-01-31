@@ -1,7 +1,6 @@
 public class Peix {
     String nom;
-
-    int count = 1;
+    static int count;
 
     public String getNom() {
         return nom;
@@ -12,15 +11,16 @@ public class Peix {
     }
 
     Peix(String nom) {
+        count++;
         setNom(nom);
     }
 
     Peix(Peix p) {
-        this.count = p.count + 1;
+        count++;
         this.nom = p.getNom();
     }
 
-    public boolean iguals(Peix p) {
-        return this.equals(p);
+    public boolean equals(Peix p) {
+        return this.nom.equals(p.nom);
     }
 }
