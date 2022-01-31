@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        QuadratMagic quadrat = new QuadratMagic();
-        quadrat.imprimeix(7);
+        QuadratMagic quadrat = new QuadratMagic(7);
+        quadrat.imprimeix();
     }
 }

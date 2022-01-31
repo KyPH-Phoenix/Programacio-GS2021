@@ -1,8 +1,10 @@
 import java.util.Random;
 
 public class Baraja {
+    // Cada baralla es internament un array de 48 cartes
     Carta[] cartes = new Carta[48];
 
+    // Constructor
     Baraja() {
         Carta.Pal[] pals = Carta.Pal.values();
         Carta.Nums[] nums = Carta.Nums.values();
@@ -17,12 +19,14 @@ public class Baraja {
         }
     }
 
+    // Funció per imprimir la baralla
     public void imrimeix() {
         for (int i = 0; i < cartes.length; i++) {
             this.cartes[i].imprimeix();
         }
     }
 
+    // Funció per mezclar la baralla
     void mezcla() {
         Carta[] ar = this.cartes;
         Random random = new Random();

@@ -3,7 +3,7 @@ public class Pruebas {
         String s = "XIV";
         int result = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (i < s.length()-1) {
+            if (i < s.length() - 1) {
                 if (valorDigitRoma(s.charAt(i + 1)) <= valorDigitRoma(s.charAt(i))) {
                     result += valorDigitRoma(s.charAt(i));
                 } else {

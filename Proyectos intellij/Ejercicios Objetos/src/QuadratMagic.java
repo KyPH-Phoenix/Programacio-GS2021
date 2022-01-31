@@ -1,17 +1,27 @@
 public class QuadratMagic {
-    void imprimeix(int n) {
-        int[][] ar = new int[n][n];
-        int longitud = ar.length;
+    int dimensio;
 
-        for (int i = 0; i < longitud; i++) {
-            creaFila(i, ar, longitud);
+    // Constructor
+    QuadratMagic(int n) {
+        this.dimensio = n;
+    }
+
+    // Funcio per imprimir el quadrat
+    void imprimeix() {
+        int n = this.dimensio;
+        int[][] ar = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            // Aqui he emprat aquesta funció per evitar un for dins un altre for
+            creaFila(i, ar, n);
         }
 
         imprimeixQuadrat(ar);
     }
 
-    static void creaFila(int i, int[][] ar, int longitud) {
-        for (int j = 0; j < longitud; j++) {
+    // Funcio que crea cada fila del quadrat
+    private void creaFila(int i, int[][] ar, int n) {
+        for (int j = 0; j < n; j++) {
             if (i > 0 && j > 0) {
                 ar[i][j] = ar[i][j - 1] + ar[i - 1][j];
             } else {
@@ -20,7 +30,8 @@ public class QuadratMagic {
         }
     }
 
-    void imprimeixQuadrat(int[][] ar) {
+    // Funció interna per imprimir el quadrat. No es la mateixa que "imprimeix"
+    private void imprimeixQuadrat(int[][] ar) {
         int digits = digitsMaxims(ar[ar.length - 1][ar.length - 1]);
 
         for (int i = 0; i < ar.length; i++) {
@@ -31,6 +42,7 @@ public class QuadratMagic {
         }
     }
 
+    // Funcio per treure els digits del numero mes gran
     private int digitsMaxims(int n) {
         return ("" + n).length();
     }
