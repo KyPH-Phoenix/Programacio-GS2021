@@ -28,14 +28,14 @@ public class Polynomial {
         this.poliArray = polinomi;
     }
 
-    int grauTermes (String[] variables, float[] polinomi){
+    int grauTermes(String[] variables, float[] polinomi) {
         int grauMax = 0;
 
         for (int i = 0; i < variables.length; i++) {
             String posicio = variables[i];
             posicio = posicio.replace("^", "");
 
-            if (posicio.charAt(posicio.length()-1) == 'x') posicio += "1";
+            if (posicio.charAt(posicio.length() - 1) == 'x') posicio += "1";
 
             if (posicio.charAt(0) == 'x') posicio = "1" + posicio;
             if (posicio.length() > 1 && posicio.substring(0, 2).equals("-x")) posicio = "-1" + posicio.substring(1);
@@ -69,11 +69,32 @@ public class Polynomial {
 
     // Suma el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
     public Polynomial add(Polynomial p) {
-        return null;
+        Polynomial aux = new Polynomial();
+
+        int longitud1 = this.poliArray.length;
+        int longitud2 = p.poliArray.length;
+
+        float[] arrayAux = new float[Math.max(longitud1, longitud2)];
+
+        sumaValor(arrayAux, this.poliArray);
+        sumaValor(arrayAux, p.poliArray);
+
+        aux.poliArray = arrayAux;
+
+        return aux;
+    }
+
+    void sumaValor(float[] aux, float[] array) {
+        for (int i = 0; i < array.length; i++) {
+            int pos1 = aux.length - 1 - i;
+            int pos2 = array.length - 1 - i;
+            aux[pos1] += array[pos2];
+        }
     }
 
     // Multiplica el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
     public Polynomial mult(Polynomial p2) {
+
         return null;
     }
 
@@ -126,9 +147,9 @@ public class Polynomial {
         }
 
         if (resultado.toString().charAt(1) == '-') {
-            return ("-" + resultado.toString().substring(3));
+            return ("-" + resultado.substring(3));
         }
 
-        return resultado.toString().substring(3);
+        return resultado.substring(3);
     }
 }
