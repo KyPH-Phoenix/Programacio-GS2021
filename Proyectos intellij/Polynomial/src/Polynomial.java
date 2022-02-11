@@ -94,8 +94,31 @@ public class Polynomial {
 
     // Multiplica el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
     public Polynomial mult(Polynomial p2) {
+        Polynomial aux = new Polynomial();
+        int longitudNova = this.poliArray.length + p2.poliArray.length - 1;
+        float[] resultat = new float[longitudNova];
 
-        return null;
+        for (int i = 0; i < this.poliArray.length; i++) {
+            multiplicarValor(resultat, p2, i);
+        }
+
+        aux.poliArray = resultat;
+        return aux;
+    }
+
+    void multiplicarValor(float[] resultat, Polynomial p2, int i) {
+        for (int j = 0; j < p2.poliArray.length; j++) {
+            float coeficient;
+            int grauNou;
+
+            int grau1 = this.poliArray.length - 1 - i;
+            int grau2 = p2.poliArray.length - 1 - j;
+
+            coeficient = this.poliArray[i] * p2.poliArray[j];
+            grauNou = grau1 + grau2;
+
+            resultat[resultat.length - grauNou - 1] += coeficient;
+        }
     }
 
     // Divideix el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
