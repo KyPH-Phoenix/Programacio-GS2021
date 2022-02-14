@@ -124,7 +124,11 @@ public class Polynomial {
     // Divideix el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
     // Torna el quocient i també el residu (ambdós polinomis)
     public Polynomial[] div(Polynomial p2) {
-        return null;
+        Polynomial[] aux = new Polynomial[2];
+
+
+
+        return aux;
     }
 
     // Troba les arrels del polinomi, ordenades de menor a major
