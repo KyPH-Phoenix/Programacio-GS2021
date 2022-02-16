@@ -15,8 +15,10 @@ public class Polynomial {
 
     // Constructor a partir d'un string
     public Polynomial(String s) {
-        s = s.replace("+ ", "");
-        s = s.replace("- ", "-");
+        s = s.replace(" ", "");
+        s = s.replace("+", " ");
+        s = s.replace("-", " -");
+        if (s.charAt(0) == ' ') s = s.substring(1);
 
         String[] variables = s.split(" ");
 
@@ -125,10 +127,35 @@ public class Polynomial {
     // Torna el quocient i també el residu (ambdós polinomis)
     public Polynomial[] div(Polynomial p2) {
         Polynomial[] aux = new Polynomial[2];
+        aux[0] = new Polynomial();
+        aux[1] = new Polynomial();
 
+        int grauNou = Math.abs(this.poliArray.length - p2.poliArray.length) + 1;
+        float[] quocient = new float[grauNou];
+        float[] dividend = copiaArray(this.poliArray);
+        float[] divisor = copiaArray(p2.poliArray);
 
+        for (int i = 0; i < grauNou; i++) {
+            quocient[i] = dividend[i] / divisor[0];
+            for (int j = 0; j < divisor.length; j++) {
+                dividend[j + i] -= quocient[i] * divisor[j];
+            }
+        }
+
+        aux[0].poliArray = quocient;
+        aux[1].poliArray = dividend;
 
         return aux;
+    }
+
+    private float[] copiaArray(float[] array) {
+        float[] resultat = new float[array.length];
+
+        for (int i = 0; i < resultat.length; i++) {
+            resultat[i] = array[i];
+        }
+
+        return resultat;
     }
 
     // Troba les arrels del polinomi, ordenades de menor a major
