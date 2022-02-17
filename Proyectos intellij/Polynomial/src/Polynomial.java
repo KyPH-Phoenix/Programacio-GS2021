@@ -160,7 +160,35 @@ public class Polynomial {
 
     // Troba les arrels del polinomi, ordenades de menor a major
     public float[] roots() {
+        float[] ar = this.poliArray;
+
+        if (ar.length == 1) return new float[]{};
+
+        if (ar.length == 2) {
+            return new float[]{ar[1] * -1};
+        }
+
+        int nombreMonomis = treureNombreMonomis();
+
+        if (nombreMonomis == 2) {
+            // Les que no tenen solucio per que intenten fer una arrel parell d'un nombre negatiu
+            if (this.poliArray.length % 2 == 1 && this.poliArray[poliArray.length - 1] > 0) return new float[]{};
+
+            float resultado = (float) Math.pow(ar[ar.length - 1], 1 / (float) (ar.length - 1));
+            return new float[]{resultado};
+        }
+
         return null;
+    }
+
+    private int treureNombreMonomis() {
+        int resultado = 0;
+
+        for (int i = 0; i < this.poliArray.length; i++) {
+            if (this.poliArray[i] != 0) resultado++;
+        }
+
+        return resultado;
     }
 
     // Torna "true" si els polinomis són iguals. Això és un override d'un mètode de la classe Object
