@@ -174,11 +174,42 @@ public class Polynomial {
             // Les que no tenen solucio per que intenten fer una arrel parell d'un nombre negatiu
             if (this.poliArray.length % 2 == 1 && this.poliArray[poliArray.length - 1] > 0) return new float[]{};
 
-            float resultado = (float) Math.pow(ar[ar.length - 1], 1 / (float) (ar.length - 1));
+            float resultado = (float) Math.pow(ar[ar.length - 1] * -1, 1 / (float) (ar.length - 1));
             return new float[]{resultado};
         }
 
+        if (nombreMonomis == 3) {
+            if (ar.length == 3) {
+                // Declar aquestes variables amb aquests noms per la formula de la equacio quadratica.
+                float a = this.poliArray[0];
+                float b = this.poliArray[1];
+                float c = this.poliArray[2];
+
+                return quadratica(a, b, c);
+            }
+        }
+
         return null;
+    }
+
+    private float[] quadratica(float a, float b, float c) {
+        // Resultat del que hi ha dins de l'arrel
+        float contingutArrel = (float) Math.pow(b, 2) - (4 * a * c);
+
+        // Si el contingut es negatiu no hi ha solucio.
+        if (contingutArrel < 0) return new float[]{};
+
+        // Si es 0 nomes hi ha una solucio.
+        if (contingutArrel == 0) return new float[]{-b / (2 * a)};
+
+        float[] array = new float[2];
+
+        array[0] = (float) ((-b + Math.sqrt(contingutArrel)) / (2 * a));
+        array[1] = (float) ((-b - Math.sqrt(contingutArrel)) / (2 * a));
+
+
+
+        return array;
     }
 
     private int treureNombreMonomis() {
