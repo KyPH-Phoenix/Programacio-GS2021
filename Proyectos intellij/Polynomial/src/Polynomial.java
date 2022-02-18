@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Polynomial {
     float[] poliArray;
 
@@ -162,20 +164,30 @@ public class Polynomial {
     public float[] roots() {
         float[] ar = this.poliArray;
 
-        if (ar.length == 1) return new float[]{};
+        if (ar.length == 1) return null;
 
         if (ar.length == 2) {
-            return new float[]{ar[1] * -1};
+            return new float[]{-ar[1]/ar[0]};
         }
 
         int nombreMonomis = treureNombreMonomis();
 
         if (nombreMonomis == 2) {
-            // Les que no tenen solucio per que intenten fer una arrel parell d'un nombre negatiu
-            if (this.poliArray.length % 2 == 1 && this.poliArray[poliArray.length - 1] > 0) return new float[]{};
+            // Determina si el grau es parell o senar.
+            boolean parell = this.poliArray.length % 2 == 1;
 
-            float resultado = (float) Math.pow(ar[ar.length - 1] * -1, 1 / (float) (ar.length - 1));
-            return new float[]{resultado};
+            // Les que no tenen solucio per que intenten fer una arrel parell d'un nombre negatiu
+            if (this.poliArray.length % 2 == 1 && this.poliArray[poliArray.length - 1] > 0) return null;
+
+            float resultado = (float) -Math.pow(ar[ar.length - 1] / ar[0], 1 / (float) (ar.length - 1));
+
+            if (!parell) {
+                return new float[]{resultado};
+            } else {
+                float[] arrayResultante = {-resultado, resultado};
+                Arrays.sort(arrayResultante);
+                return arrayResultante;
+            }
         }
 
         if (nombreMonomis == 3) {
@@ -187,9 +199,50 @@ public class Polynomial {
 
                 return quadratica(a, b, c);
             }
+
+            if (esBiquadratica()) {
+                int longitud = this.poliArray.length;
+
+                float a = this.poliArray[0];
+                float b = this.poliArray[(longitud - 1) / 2];
+                float c = this.poliArray[longitud - 1];
+
+                float[] holder = quadratica(a, b, c);
+
+                if (((longitud - 1) / 2) % 2 == 1) {
+                    float[] resultat = new float[holder.length];
+                    for (int i = 0; i < holder.length; i++) {
+                        resultat[i] = (float) Math.pow(holder[i], 1f / ((longitud - 1f) / 2f));
+                    }
+
+                    return resultat;
+                } else {
+
+                    for (int i = 0; i < 2; i++) {
+                        if (resultat[i] < 0) continue;
+                        if (resultat[i] == 0) {
+
+                            continue;
+                        }
+
+                    }
+
+
+                }
+            }
         }
 
         return null;
+    }
+
+    private boolean esBiquadratica() {
+        if (this.poliArray.length % 2 == 0) return false;
+
+        if (this.poliArray[(this.poliArray.length - 1) / 2] != 0) {
+            return true;
+        }
+
+        return false;
     }
 
     private float[] quadratica(float a, float b, float c) {
@@ -197,7 +250,7 @@ public class Polynomial {
         float contingutArrel = (float) Math.pow(b, 2) - (4 * a * c);
 
         // Si el contingut es negatiu no hi ha solucio.
-        if (contingutArrel < 0) return new float[]{};
+        if (contingutArrel < 0) return null;
 
         // Si es 0 nomes hi ha una solucio.
         if (contingutArrel == 0) return new float[]{-b / (2 * a)};
@@ -207,7 +260,7 @@ public class Polynomial {
         array[0] = (float) ((-b + Math.sqrt(contingutArrel)) / (2 * a));
         array[1] = (float) ((-b - Math.sqrt(contingutArrel)) / (2 * a));
 
-
+        Arrays.sort(array);
 
         return array;
     }
