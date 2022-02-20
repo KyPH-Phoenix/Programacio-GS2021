@@ -44,15 +44,15 @@ public class Polynomial {
             if (posicio.charAt(0) == 'x') posicio = "1" + posicio;
             if (posicio.length() > 1 && posicio.substring(0, 2).equals("-x")) posicio = "-1" + posicio.substring(1);
 
-            String[] elemento = posicio.split("x");
+            String[] element = posicio.split("x");
 
-            if (elemento.length > 1) {
-                grauMax = Math.max(Integer.parseInt(elemento[1]), grauMax);
+            if (element.length > 1) {
+                grauMax = Math.max(Integer.parseInt(element[1]), grauMax);
             }
 
             if (polinomi != null) {
-                int valor = Integer.parseInt(elemento[0]);
-                int grau = (elemento.length > 1) ? Integer.parseInt(elemento[1]) : 0;
+                int valor = Integer.parseInt(element[0]);
+                int grau = (element.length > 1) ? Integer.parseInt(element[1]) : 0;
 
                 polinomi[polinomi.length - grau - 1] += valor;
             }
@@ -162,36 +162,27 @@ public class Polynomial {
 
     // Troba les arrels del polinomi, ordenades de menor a major
     public float[] roots() {
-        float[] ar = this.poliArray;
+        float[] arrray = this.poliArray;
 
-        if (ar.length == 1) return null;
+        // Polinomi sense x (no es un polinomi)
+        if (arrray.length == 1) return null;
 
-        if (ar.length == 2) {
-            return new float[]{-ar[1]/ar[0]};
+        // polinomi de grau 1
+        if (arrray.length == 2) {
+            return new float[]{-arrray[1] / arrray[0]};
         }
 
         int nombreMonomis = treureNombreMonomis();
 
+        // Polinomis que nomes tenen dos monomis;
         if (nombreMonomis == 2) {
-            // Determina si el grau es parell o senar.
-            boolean parell = this.poliArray.length % 2 == 1;
-
-            // Les que no tenen solucio per que intenten fer una arrel parell d'un nombre negatiu
-            if (this.poliArray.length % 2 == 1 && this.poliArray[poliArray.length - 1] > 0) return null;
-
-            float resultado = (float) -Math.pow(ar[ar.length - 1] / ar[0], 1 / (float) (ar.length - 1));
-
-            if (!parell) {
-                return new float[]{resultado};
-            } else {
-                float[] arrayResultante = {-resultado, resultado};
-                Arrays.sort(arrayResultante);
-                return arrayResultante;
-            }
+            return nomesDosMonomis(arrray);
         }
 
+        // Polinomis de tres monomis que son de 2n grau o biquadratics.
         if (nombreMonomis == 3) {
-            if (ar.length == 3) {
+            // Segon grau
+            if (arrray.length == 3) {
                 // Declar aquestes variables amb aquests noms per la formula de la equacio quadratica.
                 float a = this.poliArray[0];
                 float b = this.poliArray[1];
@@ -200,6 +191,7 @@ public class Polynomial {
                 return quadratica(a, b, c);
             }
 
+            // Biquadratics
             if (esBiquadratica()) {
                 int longitud = this.poliArray.length;
 
@@ -208,31 +200,236 @@ public class Polynomial {
                 float c = this.poliArray[longitud - 1];
 
                 float[] holder = quadratica(a, b, c);
+                if (holder == null) return null;
 
-                if (((longitud - 1) / 2) % 2 == 1) {
-                    float[] resultat = new float[holder.length];
-                    for (int i = 0; i < holder.length; i++) {
-                        resultat[i] = (float) Math.pow(holder[i], 1f / ((longitud - 1f) / 2f));
-                    }
-
-                    return resultat;
-                } else {
-
-                    for (int i = 0; i < 2; i++) {
-                        if (resultat[i] < 0) continue;
-                        if (resultat[i] == 0) {
-
-                            continue;
-                        }
-
-                    }
-
-
-                }
+                return calcularBiquadratica(holder, longitud);
             }
         }
 
-        return null;
+        // Ruffini
+        float[] expressioRufini = copiaArray(arrray);
+        float[] resultats = new float[arrray.length - 1];
+
+        for (int i = 0; i < arrray.length - 3; i++) {
+            float[] bases = cercarBase(expressioRufini[expressioRufini.length - 1]);
+
+            expressioRufini = rondaRuffini(bases, expressioRufini, resultats);
+        }
+
+        float[] resultatsRestants;
+
+        if (expressioRufini.length == 3) {
+            float a = expressioRufini[0];
+            float b = expressioRufini[1];
+            float c = expressioRufini[2];
+
+            resultatsRestants = quadratica(a, b, c);
+        } else {
+            resultatsRestants = nomesDosMonomis(expressioRufini);
+        }
+
+        if (resultatsRestants != null) afegirResultatsRestants(resultatsRestants, resultats);
+        resultats = llevarZerosAlResultat(resultats);
+
+        Arrays.sort(resultats);
+
+        return resultats;
+    }
+
+    private float[] llevarZerosAlResultat(float[] resultats) {
+        int numeroDeZeros = comptarZeros(resultats);
+
+        if (numeroDeZeros > 0) {
+            float[] resultatSenseZeros = new float[resultats.length - numeroDeZeros];
+
+            for (int i = 0; i < resultats.length; i++) {
+                if (resultats[i] != 0) {
+                    resultatSenseZeros[i] = resultats[i];
+                }
+            }
+
+            resultats = resultatSenseZeros;
+        }
+
+        return resultats;
+    }
+
+    private int comptarZeros(float[] resultats) {
+        int nZeros = 0;
+
+        for (int i = 0; i < resultats.length; i++) {
+            if (resultats[i] == 0) nZeros++;
+        }
+
+        return nZeros;
+    }
+
+    private void afegirResultatsRestants(float[] resultatsRestants, float[] resultats) {
+        for (int i = 0; i < resultats.length; i++) {
+            if (resultats[i] == 0) {
+                for (int j = 0; j < resultatsRestants.length; j++) {
+                    resultats[i + j] = resultatsRestants[j];
+                }
+                break;
+            }
+        }
+    }
+
+    private float[] rondaRuffini(float[] bases, float[] expressioRufini, float[] resultats) {
+        for (int i = 0; i < bases.length; i++) {
+            float[] arrayAux = copiaArray(expressioRufini);
+
+            float base = bases[i];
+            boolean baseEnResultat = comprobarResultat(resultats, base);
+
+            if (baseEnResultat) continue;
+
+            for (int j = 1; j < arrayAux.length; j++) {
+                arrayAux[j] += base * arrayAux[j - 1];
+            }
+
+            if (arrayAux[arrayAux.length -1] == 0) {
+                guardarResultat(base, resultats);
+                arrayAux = llevarZero(arrayAux);
+                expressioRufini = arrayAux;
+                break;
+            }
+        }
+
+        return expressioRufini;
+    }
+
+    private float[] llevarZero(float[] arrayAux) {
+        float[] senseZero = new float[arrayAux.length - 1];
+
+        for (int i = 0; i < senseZero.length; i++) {
+            senseZero[i] = arrayAux[i];
+        }
+
+        arrayAux = senseZero;
+
+        return arrayAux;
+    }
+
+    private void guardarResultat(float base, float[] resultats) {
+        for (int i = 0; i < resultats.length; i++) {
+            if (resultats[i] == 0) {
+                resultats[i] = base;
+                break;
+            }
+        }
+    }
+
+    private boolean comprobarResultat(float[] resultados, float base) {
+        for (int i = 0; i < resultados.length; i++) {
+            if (base == resultados[i]) return true;
+        }
+
+        return false;
+    }
+
+    float[] cercarBase(float numero) {
+        int numeroDeBases = treureBases(numero, null);
+
+        float[] bases = new float[numeroDeBases * 2];
+        treureBases(numero, bases);
+
+        return bases;
+    }
+
+    private int treureBases(float numero, float[] bases) {
+        int contador = 0;
+
+        numero = Math.abs(numero);
+
+        for (int i = 1; i <= numero; i++) {
+            if (numero % i == 0) {
+                if (bases != null) {
+                    bases[contador * 2] = i;
+                    bases[contador * 2 + 1] = -i;
+                }
+                contador++;
+            }
+        }
+
+        return contador;
+    }
+
+    private float[] calcularBiquadratica(float[] holder, int longitud) {
+        if (((longitud - 1) / 2) % 2 == 1) {
+            float[] resultat = new float[holder.length];
+            for (int i = 0; i < holder.length; i++) {
+                resultat[i] = (float) Math.pow(holder[i], 1f / ((longitud - 1f) / 2f));
+            }
+
+            return resultat;
+        } else {
+            int nSolucions = ferArrels(holder, null);
+
+            float[] resultat = new float[nSolucions];
+
+            ferArrels(holder, resultat);
+
+            return resultat;
+        }
+    }
+
+    private float[] nomesDosMonomis(float[] array) {
+        // Determina si el grau es parell o senar.
+        boolean parell = this.poliArray.length % 2 == 1;
+
+        // Les que no tenen solucio per que intenten fer una arrel parell d'un nombre negatiu
+        if (parell && this.poliArray[poliArray.length - 1] > 0) return null;
+
+        boolean negatiu = false;
+
+
+        if (-array[array.length - 1] < 0) {
+            negatiu = true;
+            array[array.length - 1] *= -1;
+        }
+
+        float resultado = (float) Math.pow(-array[array.length - 1] / array[0], 1 / (float) (array.length - 1));
+
+        if (negatiu) resultado *= -1;
+
+
+        if (!parell) {
+            return new float[]{resultado};
+        } else {
+            float[] arrayResultante = {-resultado, resultado};
+            Arrays.sort(arrayResultante);
+            return arrayResultante;
+        }
+    }
+
+    private int ferArrels(float[] holder, float[] resultat) {
+        int nResultats = 2 * holder.length;
+
+        for (int i = 0; i < holder.length; i++) {
+            if (holder[i] < 0) {
+                nResultats -= 2;
+                continue;
+            }
+
+            if (holder[i] == 0) {
+                nResultats--;
+                if (resultat != null) {
+                    resultat[i] = 0;
+                }
+                continue;
+            }
+
+            if (resultat != null) {
+                float whatever = (float) Math.sqrt(holder[i]);
+                resultat[2 * i] = whatever;
+                resultat[2 * i + 1] = -whatever;
+            }
+        }
+
+        if (resultat != null) Arrays.sort(resultat);
+
+        return nResultats;
     }
 
     private boolean esBiquadratica() {

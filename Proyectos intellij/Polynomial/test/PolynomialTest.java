@@ -289,7 +289,7 @@ public class PolynomialTest {
         p = new Polynomial("x^2 + 81 + 18x");
         assertEqualsFloats(new float[]{-9}, p.roots());
 
-        /*// Biquadràtica
+        // Biquadràtica
         p = new Polynomial("x^4 - 13x^2 + 36");
         assertEqualsFloats(new float[]{-3, -2, 2, 3}, p.roots());
 
@@ -310,7 +310,7 @@ public class PolynomialTest {
         assertEqualsFloats(new float[]{-1.470f}, p.roots());
 
         p = new Polynomial("x^12 + 1");
-        assertNull(p.roots());*/
+        assertNull(p.roots());
     }
 
     @Test
