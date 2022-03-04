@@ -22,7 +22,6 @@ public class Exercici2Test {
         circle = new Circle(6.89);
         assertEquals("Cercle de radi: 6.89", circle.toString());
         assertEquals(149.13800,circle.getArea(),0.00001);
-
     }
 
     @Test
