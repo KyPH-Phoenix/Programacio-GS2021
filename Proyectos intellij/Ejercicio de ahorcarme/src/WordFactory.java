@@ -6,14 +6,25 @@ public interface WordFactory {
 
 class DefaultWordFactory implements WordFactory {
     public Word makeWord() {
-        return new Word("Ordinador");
+        return new Word("ordinador");
     }
 }
 
 
 class DictWordFactory implements WordFactory {
+    private String[] words = {
+            "aprobar",
+            "manolo",
+            "juanma",
+            "wsrtyuytrcewazethujkouytredguiuyteqa",
+            "uvuvwevwevwe",
+            "onyetenyevwe",
+            "ugwemuhwem",
+            "osas"
+    };
+
     @Override
     public Word makeWord() {
-        return null;
+        return new Word(this.words[(int) (Math.random() * words.length)]);
     }
 }

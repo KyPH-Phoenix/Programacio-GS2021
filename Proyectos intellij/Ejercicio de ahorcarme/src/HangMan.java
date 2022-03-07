@@ -21,8 +21,8 @@ public class HangMan {
     }
 
     public static void main(String[] args) {
-        WordFactory defaultWordFactory = new DefaultWordFactory();
-        HangMan hm = new HangMan(defaultWordFactory);
+        WordFactory wordFactory = new DictWordFactory();
+        HangMan hm = new HangMan(wordFactory);
         hm.play();
     }
 }

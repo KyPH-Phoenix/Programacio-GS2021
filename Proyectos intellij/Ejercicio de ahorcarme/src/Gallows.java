@@ -10,12 +10,13 @@ public abstract class Gallows {
     }
 
     boolean isHung() {
-        return pointsLeft < 0;
+        return pointsLeft == 0;
     }
 }
 
 
 class TextGallows extends Gallows {
     void display() {
+        System.out.printf("Te quedan %d puntos\n", this.pointsLeft);
     }
 }
