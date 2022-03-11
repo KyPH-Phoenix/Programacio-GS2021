@@ -1,4 +1,4 @@
-public class Intstrumento {
+public class Instrumento {
     private int nSerie;
     private Especificacion especificacion;
 
@@ -18,9 +18,9 @@ public class Intstrumento {
         this.especificacion = especificacion;
     }
 
-    public Intstrumento() {}
+    public Instrumento() {}
 
-    public Intstrumento(Especificacion esp) {
+    public Instrumento(Especificacion esp) {
         this.especificacion = esp;
     }
 

@@ -1,17 +1,21 @@
-import java.util.Arrays;
-
 public class Inventario {
     private final static int MAX_INSTR = 1000;
-    private Intstrumento[] intstrumentos = new Intstrumento[MAX_INSTR];
+    private Instrumento[] instrumentos = new Instrumento[MAX_INSTR];
     private int nInstr = 0;
 
-    public Intstrumento[] buscarInstrumentos(Especificacion esp) {
-        return null;
+    public void buscar(Especificacion esp) {
+        for (int i = 0; i < this.nInstr; i++) {
+            Instrumento instr = this.instrumentos[i];
+            Especificacion espInst = instr.getEspecificacion();
+            if (espInst.match(esp)) {
+                System.out.println("\n" + instr);
+            }
+        }
     }
 
-    public void añadirInstrumentos(Intstrumento instr) {
+    public void añadirInstrumentos(Instrumento instr) {
         if (nInstr < MAX_INSTR) {
-            this.intstrumentos[nInstr] = instr;
+            this.instrumentos[nInstr] = instr;
             nInstr++;
         }
     }
@@ -22,7 +26,7 @@ public class Inventario {
         resultado.append(String.format("Numero de instrumentos: %s\n", this.nInstr));
         for (int i = 0; i < this.nInstr; i++) {
             resultado.append(String.format("\nInstrumento %d\n", i + 1));
-            resultado.append(intstrumentos[i].toString());
+            resultado.append(instrumentos[i].toString());
         }
         return resultado.toString();
     }

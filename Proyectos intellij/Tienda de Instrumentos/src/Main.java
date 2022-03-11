@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         Inventario inventario = new Inventario();
@@ -13,10 +11,18 @@ public class Main {
         especificacion.añadirEsp("Es eléctrica", true);
         especificacion.añadirEsp("Precio", 10000);
 
-        Intstrumento fenderStratocaster = new Intstrumento(especificacion);
+        Instrumento fenderStratocaster = new Instrumento(especificacion);
         fenderStratocaster.setnSerie(123456);
 
         inventario.añadirInstrumentos(fenderStratocaster);
-        System.out.println(inventario);
+
+        Especificacion especificacion2 = new Especificacion();
+        especificacion2.añadirEsp("Tipo", "Bajo");
+        especificacion2.añadirEsp("Número de cuerdas", 6);
+        especificacion2.añadirEsp("Marca", "Fender");
+        especificacion2.añadirEsp("Modelo", "Stratocaster");
+        especificacion2.añadirEsp("Precio", 10000);
+
+        inventario.buscar(especificacion);
     }
 }

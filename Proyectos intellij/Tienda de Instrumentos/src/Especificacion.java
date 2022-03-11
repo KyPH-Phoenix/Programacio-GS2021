@@ -31,4 +31,27 @@ public class Especificacion {
 
         return resultado.toString();
     }
+
+    public boolean match(Especificacion espCerca) {
+        Especificacion espInst = this;
+        for (int i = 0; i < espCerca.nAtributos; i++) {
+            String atributo = espCerca.atributos[i];
+            Object valor = espCerca.valores[i];
+            if (!atributoMatch(atributo, valor)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean atributoMatch(String atributo, Object valor) {
+        for (int i = 0; i < this.nAtributos; i++) {
+            if (atributos[i].equals(atributo)) {
+                return valores[i].equals(valor);
+            }
+        }
+
+        return false;
+    }
 }
