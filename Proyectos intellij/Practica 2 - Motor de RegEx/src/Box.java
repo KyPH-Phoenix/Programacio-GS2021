@@ -13,7 +13,7 @@ public class Box<T> {
         this.capacity = capacity;
     }
 
-    public int Size() {
+    public int size() {
         return this.nObjects;
     }
 
@@ -29,7 +29,7 @@ public class Box<T> {
             this.objectArray = newArray;
             this.capacity = newCapacity;
 
-            System.out.printf("Capacidad aumentada a %d\n", newCapacity);
+            // System.out.printf("Capacidad aumentada a %d\n", newCapacity);
         }
 
         this.objectArray[this.nObjects] = o;
@@ -40,11 +40,11 @@ public class Box<T> {
     public String toString() {
         String result = "\n";
         for (int i = 0; i < this.nObjects; i++) {
-            result += this.objectArray[i].toString() + ", ";
+            result += this.objectArray[i].toString();
         }
 
-
-        return result.substring(0, result.length() - 2);
+        return result;
+        //return result.substring(0, result.length() - 2);
     }
 
     public void remove(int pos) {

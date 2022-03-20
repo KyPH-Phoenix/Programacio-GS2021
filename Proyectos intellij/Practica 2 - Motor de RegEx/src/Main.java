@@ -1,22 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        Box<String> box = new Box<>();
+        Pattern p = new Pattern("s@@micro");
 
-        box.addElement("Mono");
-        box.addElement("Juan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
-        box.addElement("Pan");
+        System.out.println(p);
 
-        System.out.println(box);
     }
 }
