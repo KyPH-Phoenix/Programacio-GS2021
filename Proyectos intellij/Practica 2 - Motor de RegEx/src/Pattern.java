@@ -24,26 +24,31 @@ public class Pattern {
                 this.components.addElement(comp);
                 continue;
             }
-
+            
             if (character == '@') {
                 nextCharNormal = true;
                 continue;
             }
 
-            /*if (character == '[') {
+            if (character == '[') {
+                String charGroup = "";
                 while (character != ']') {
-
+                    charGroup += character;
+                    i++;
+                    character = pat.charAt(i);
                 }
+                Component comp = new Component(charGroup, Component.Types.CHARGROUP);
+                this.components.addElement(comp);
                 continue;
-            }*/
+            }
 
-            if (character == '%') {
+            if (character == '%' && i == 0) {
                 Component comp = new Component(character, Component.Types.BOL);
                 this.components.addElement(comp);
                 continue;
             }
 
-            if (character == '$') {
+            if (character == '$' && i == pat.length() - 1) {
                 Component comp = new Component(character, Component.Types.EOL);
                 this.components.addElement(comp);
                 continue;
