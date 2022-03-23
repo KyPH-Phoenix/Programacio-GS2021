@@ -33,7 +33,12 @@ public class Pattern {
             if (character == '[') {
                 String charGroup = "";
                 while (character != ']') {
-                    charGroup += character;
+                    if (character == '-') {
+                        charGroup += addRange(pat.charAt(i - 1), pat.charAt(i + 1));
+                    } else {
+                        charGroup += character;
+                    }
+
                     i++;
                     character = pat.charAt(i);
                 }
@@ -63,6 +68,16 @@ public class Pattern {
             Component component = new Component(character, Component.Types.NORMCHAR);
             this.components.addElement(component);
         }
+    }
+
+    private String addRange(char firstChar, char lastChar) {
+        String resultado = "";
+
+        for (int i = firstChar + 1; i < lastChar; i++) {
+            resultado += (char) i;
+        }
+
+        return resultado;
     }
 
     @Override

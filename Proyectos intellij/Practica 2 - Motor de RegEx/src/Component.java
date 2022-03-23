@@ -4,6 +4,7 @@ public class Component {
     enum Types {
         NORMCHAR, QUESTMARK, CHARGROUP, BOL, EOL, CLOUSURE
     }
+    private Component subcomponent;
 
     private Types type;
 

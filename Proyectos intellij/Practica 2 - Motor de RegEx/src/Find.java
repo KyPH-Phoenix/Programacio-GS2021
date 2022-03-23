@@ -17,13 +17,11 @@ public class Find {
 
         int patternSize = pattern.getComponents().size();
 
-        if (patternSize - 2 > text.length()) return false;
-
         for (; textPos < this.text.length(); textPos++, patternPos++) {
             Component.Types type = pattern.getComponents().get(patternPos).getType();
 
             char textChar = this.text.charAt(textPos);
-            char patternChar = 'a';
+            char patternChar = '0';
             String patternGroup = "";
 
             if (type.equals(Component.Types.CHARGROUP)) {
@@ -51,11 +49,6 @@ public class Find {
                 continue;
             }
 
-            if (type.equals(Component.Types.EOL)) {
-                if (textPos != text.length() || patternPos < patternSize) return false;
-                return true;
-            }
-
             if (type.equals(Component.Types.CHARGROUP)) {
                 if (patternGroup.contains("" + textChar)) {
                     if (patternPos == patternSize - 1) return true;
@@ -66,7 +59,7 @@ public class Find {
             patternPos = -1;
         }
 
-        Component.Types type = pattern.getComponents().get(patternSize - 1).getType();
+        Component.Types type = pattern.getComponents().get(patternPos).getType();
 
         if (type.equals(Component.Types.EOL)) {
             if (textPos != text.length()) return false;
