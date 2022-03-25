@@ -31,6 +31,9 @@ public class Pattern {
             }
 
             if (character == '[') {
+                i++;
+                character = pat.charAt(i);
+
                 String charGroup = "";
                 while (character != ']') {
                     if (character == '-') {
@@ -61,6 +64,8 @@ public class Pattern {
 
             if (character == '*' || character == '+') {
                 Component comp = new Component(character, Component.Types.CLOUSURE);
+                comp.setSubcomponent(this.components.get(i - 2));
+                this.components.remove(i - 2);
                 this.components.addElement(comp);
                 continue;
             }

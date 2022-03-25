@@ -56,6 +56,9 @@ public class Find {
                 }
             }
 
+            if (type.equals(Component.Types.CLOUSURE)) {
+
+            }
             patternPos = -1;
         }
 
