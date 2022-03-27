@@ -1,7 +1,7 @@
-import java.util.List;
-
 public class Find {
     private String text;
+    private Pattern pattern;
+    private int textPos = 0;
 
     public Find(String s) {
         this.text = s;
@@ -10,50 +10,56 @@ public class Find {
     public boolean match(String stringPat) {
         if (stringPat.equals("")) return false;
 
-        Pattern pattern = new Pattern(stringPat);
+        this.pattern = new Pattern(stringPat);
 
-        return textMatch(pattern, 0, 0);
+        return textMatch(0, 0);
     }
 
-    private boolean textMatch(Pattern pattern, int textPos, int patternPos) {
+    private boolean textMatch(int textPos, int patternPos) {
+        this.textPos = textPos;
 
-        int patternSize = pattern.getComponents().size();
+        int patternSize = this.pattern.getComponents().size();
 
-        for (; textPos < this.text.length(); textPos++, patternPos++) {
+        for (; this.textPos < this.text.length(); this.textPos++, patternPos++) {
 
-            Component component = pattern.getComponents().get(patternPos);
+            Component component = this.pattern.getComponents().get(patternPos);
 
             Component.Types type = component.getType();
 
             if (type.equals(Component.Types.BOL)) {
-                if (textPos != 0) return false;
-                textPos--;
+                if (this.textPos != 0) return false;
+                this.textPos--;
                 continue;
             }
 
-            if (characterMatch(component, type, textPos, patternPos)) {
+            if (characterMatch(component, this.textPos, patternPos)) {
                 if (patternPos == patternSize - 1) return true;
                 continue;
             }
 
             // Si no fa match, torna enrere el texte en 1 posició per evitar botar caracters
-            if (textPos != 0 && patternPos != 0) textPos--;
+            if (this.textPos != 0 && patternPos != 0) this.textPos--;
 
             // Reset de la posicio del pattern
             patternPos = -1;
         }
 
-        Component.Types type = pattern.getComponents().get(patternPos).getType();
+        Component.Types type = this.pattern.getComponents().get(patternPos).getType();
 
         if (type.equals(Component.Types.EOL)) {
-            if (textPos != text.length()) return false;
+            if (this.textPos != text.length()) return false;
             return true;
         }
 
         return false;
     }
 
-    private boolean characterMatch(Component component, Component.Types type, int textPos, int patternPos) {
+    private boolean characterMatch(Component component, int textPos, int patternPos) {
+
+        Component.Types type = component.getType();
+
+        // Per evitar que surti del string als clousures, si li passam una possició massa grosa retorna false.
+        if (textPos >= this.text.length()) return false;
 
         char textChar = this.text.charAt(textPos);
         char patternChar = '0';
@@ -85,16 +91,37 @@ public class Find {
         if (type.equals(Component.Types.CLOUSURE)) {
             Component subComponent = component.getSubcomponent();
 
-            if (patternChar == '+') {
-                if (!characterMatch(subComponent, subComponent.getType(), textPos, patternPos)) {
-                    return false;
-                }
-            }
-
-
+            return (clousureMatch(patternChar, subComponent, patternPos, textPos));
         }
 
         return false;
+    }
+
+    private boolean clousureMatch(char patternChar, Component subComponent, int patternPos, int textPos) {
+        if (patternChar == '+') {
+            if (!characterMatch(subComponent, textPos, patternPos)) {
+                return false;
+            }
+        }
+
+        int clousurePosition = textPos;
+
+        while (characterMatch(subComponent, clousurePosition, patternPos)) clousurePosition++;
+
+        while (clousurePosition >= textPos + 1) {
+            if (clousurePosition == this.text.length()) {
+                this.textPos = clousurePosition - 1;
+                return true;
+            }
+            if (textMatch(clousurePosition, patternPos + 1)) {
+                this.textPos = clousurePosition - 1;
+                return true;
+            }
+            clousurePosition--;
+        }
+
+        this.textPos--;
+        return true;
     }
 
     public Object capture(String s) {

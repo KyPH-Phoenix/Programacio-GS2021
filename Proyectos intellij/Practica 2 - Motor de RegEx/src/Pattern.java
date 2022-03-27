@@ -64,8 +64,8 @@ public class Pattern {
 
             if (character == '*' || character == '+') {
                 Component comp = new Component(character, Component.Types.CLOUSURE);
-                comp.setSubcomponent(this.components.get(i - 1));
-                this.components.remove(i - 1);
+                comp.setSubcomponent(this.components.get(components.size() - 1));
+                this.components.remove(components.size() - 1);
                 this.components.addElement(comp);
                 continue;
             }
