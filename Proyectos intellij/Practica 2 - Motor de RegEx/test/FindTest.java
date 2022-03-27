@@ -141,33 +141,33 @@ public class FindTest {
         assertFalse(f.match("az+bc"));
     }
 
-    @Test
-    public void closures2() {
-        Find f = new Find("bb");
-        assertTrue(f.match("b*"));
-        assertTrue(f.match("[abc]*"));
-        assertTrue(f.match("b[ac]*"));
-
-        f = new Find("aaaaaaabc");
-        assertTrue(f.match("a*bc"));
-        assertFalse(f.match("a*kbc"));
-        assertTrue(f.match("ab*c"));
-        assertTrue(f.match("abb*c"));
-        assertFalse(f.match("abbb*c"));
-        assertTrue(f.match("az*bc"));
-        assertTrue(f.match("[abc]*c"));
-
-        f = new Find("192228888888888888886722222226");
-        assertTrue(f.match("192*8*672*6"));
-        assertFalse(f.match("2*78*6"));
-        assertTrue(f.match("1*"));
-        assertTrue(f.match("8*"));
-        assertTrue(f.match("k*"));
-        assertTrue(f.match("%1[92867]*67"));
-        assertFalse(f.match("14*2"));
-        assertTrue(f.match("14*9"));
-        assertFalse(f.match("14*9$"));
-    }
+//    @Test
+//    public void closures2() {
+//        Find f = new Find("bb");
+//        assertTrue(f.match("b*"));
+//        assertTrue(f.match("[abc]*"));
+//        assertTrue(f.match("b[ac]*"));
+//
+//        f = new Find("aaaaaaabc");
+//        assertTrue(f.match("a*bc"));
+//        assertFalse(f.match("a*kbc"));
+//        assertTrue(f.match("ab*c"));
+//        assertTrue(f.match("abb*c"));
+//        assertFalse(f.match("abbb*c"));
+//        assertTrue(f.match("az*bc"));
+//        assertTrue(f.match("[abc]*c"));
+//
+//        f = new Find("192228888888888888886722222226");
+//        assertTrue(f.match("192*8*672*6"));
+//        assertFalse(f.match("2*78*6"));
+//        assertTrue(f.match("1*"));
+//        assertTrue(f.match("8*"));
+//        assertTrue(f.match("k*"));
+//        assertTrue(f.match("%1[92867]*67"));
+//        assertFalse(f.match("14*2"));
+//        assertTrue(f.match("14*9"));
+//        assertFalse(f.match("14*9$"));
+//    }
 
     @Test
     public void captures() {
