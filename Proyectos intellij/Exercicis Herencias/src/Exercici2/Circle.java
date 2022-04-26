@@ -18,6 +18,6 @@ public class Circle {
 
     @Override
     public String toString() {
-        return "Cercle de radi: " + this.radius;
+        return "\nCirculo de radio: " + this.radius + "\nArea del circulo: " + this.getArea();
     }
 }
