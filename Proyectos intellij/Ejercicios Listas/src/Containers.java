@@ -1,5 +1,3 @@
-import javax.print.attribute.SetOfIntegerSyntax;
-import java.security.Key;
 import java.util.*;
 
 public class Containers {
@@ -24,9 +22,11 @@ public class Containers {
         List<Integer> l1 = new ArrayList<>();
 
         // Afegeix els números 10, 20 i 15
-        l1.add(10);
+        /*l1.add(10);
         l1.add(20);
-        l1.add(15);
+        l1.add(15);*/
+
+        l1.addAll(List.of(10, 20, 15));
 
         // Imprimeix la llista
         System.out.println(l1);
@@ -55,7 +55,8 @@ public class Containers {
         l1.clear();
 
         // Afegeix els tres primers elements de l2 a l1
-        for (int i = 0; i < 3; i++) l1.add(l2.get(i));
+        // for (int i = 0; i < 3; i++) l1.add(l2.get(i));
+        l1.addAll(l2.subList(0, 3));
 
         // Comprova si dins l1 hi ha el número 6
         System.out.println(l1.contains(6));
@@ -76,7 +77,8 @@ public class Containers {
         System.out.println(l1);
 
         // Converteix l1 a array i imprimeix-ho
-        System.out.println(Arrays.toString(l1.toArray(new Integer[0])));
+        Integer[] array = l1.toArray(new Integer[0]);
+        System.out.println(Arrays.toString(array));
     }
 
     static void iterators() {
@@ -128,13 +130,16 @@ public class Containers {
 
         // Afegeix els elements 12, 14 i 99 a la cua
         int[] array = {12, 14, 99};
-        for (int n : array) cua.add(n);
+//        for (int n : array) cua.add(n);
+        for (int n : array) cua.offer(n);
 
         // Mostra el primer element (sense treurer-lo) de la cúa i imprimeix-ho
-        System.out.println(cua.stream().findFirst().get());
+//        System.out.println(cua.stream().findFirst().get());
+        System.out.println(cua.peek());
 
         // Treu el primer element de la cúa
-        cua.remove();
+//        cua.remove();
+        cua.poll();
 
         // Imprimeix la cúa
         System.out.println("\n" + cua + "\n");
@@ -144,32 +149,37 @@ public class Containers {
 
         // Afegeix els elements 5, 2, -1, 9 i 7
         array = new int[]{5, 2, -1, 9, 7};
-        for (int n : array) cuaPrioritat.add(n);
+//        for (int n : array) cuaPrioritat.add(n);
+        for (int n : array) cuaPrioritat.offer(n);
 
         // Imprimeix la cúa
         System.out.println(cuaPrioritat);
 
         // Fes un bucle que vagi traient cada element i l'imprimeixi de la cúa de prioritat, mentre en quedin
         while (!cuaPrioritat.isEmpty()) {
-            System.out.println(cuaPrioritat.stream().findFirst().get());
-            cuaPrioritat.remove();
+//            System.out.println(cuaPrioritat.stream().findFirst().get());
+//            cuaPrioritat.remove();
+            System.out.println(cuaPrioritat.poll());
         }
 
     }
 
     static void piles() {
         // Declara una pila (stack) com una LinkedList
-        Stack<Integer> pila= new Stack<>();
-//        LinkedList li = pila;
+        LinkedList<Integer> pila = new LinkedList<>();
 
         // Push a la pila dels valors 15, 56, 21 i -5
+        int[] array = {15, 56, 21, -5};
+        for (int n : array) pila.push(n);
 
         // Imprimeix la pila
+        System.out.println(pila);
 
         // Imprimeix el valor de damunt la pila, sense treurer-lo
+        System.out.println(pila.getFirst());
 
         // Treu i imprimeix els valors de la pila
-
+        while (!pila.isEmpty()) System.out.println(pila.pop());
     }
 
     static void conjunts() {
@@ -243,8 +253,18 @@ public class Containers {
         // Empra un mapa que associi un caràcter a un número enter per dur el compte
         // de quantes vegades surt cada lletra a la paraula "ESTERNOCLEIDOMASTOIDEO"
         Map<Character, Integer> map2 = new HashMap<>();
+        String s = "ESTERNOCLEIDOMASTOIDEO";
 
+        for (char c : s.toCharArray()) {
+            int i = 1;
+            if (map2.get(c) != null) {
+                i = map2.get(c) + 1;
+            }
 
+            map2.put(c, i);
+        }
+
+        System.out.println(map2);
     }
 }
 
