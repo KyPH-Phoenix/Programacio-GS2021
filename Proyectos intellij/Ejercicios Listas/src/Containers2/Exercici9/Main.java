@@ -1,5 +1,4 @@
-package Containers2.Exercici8;
-
+package Containers2.Exercici9;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,6 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Main {
+    static Random random = new Random();
+
     public static void main(String[] args) {
         long t0 = System.currentTimeMillis();
 
@@ -22,28 +23,22 @@ public class Main {
         long t2 = System.currentTimeMillis() - t0 - t1;
         System.out.printf("Tiempo desde que comenzó el programa: %dms\nTiempo para rellenar l2: %dms\n\n", System.currentTimeMillis() - t0, t2);
 
-        test(l1);
+        for (int i = 0; i < 5000; i++) {
+            l1.add(random.nextInt(l1.size()), random.nextInt());
+        }
 
         long t3 = System.currentTimeMillis() - t0 - t1 - t2;
-        System.out.printf("Tiempo desde que comenzó el programa: %dms\nTiempo para acceder a l1: %dms\n\n", System.currentTimeMillis() - t0, t3);
+        System.out.printf("Tiempo desde que comenzó el programa: %dms\nTiempo para añadir 5000 valores a l1: %dms\n\n", System.currentTimeMillis() - t0, t3);
 
-        test(l2);
+        for (int i = 0; i < 5000; i++) {
+            l1.add(random.nextInt(l2.size()), random.nextInt());
+        }
 
         long t4 = System.currentTimeMillis() - t0 - t1 - t2 - t3;
-        System.out.printf("Tiempo desde que comenzó el programa: %dms\nTiempo para acceder a l2: %dms\n\n", System.currentTimeMillis() - t0, t4);
-
-    }
-
-    static Random random = new Random();
-
-    private static void test(List<Integer> list) {
-        for (int i = 0; i < 1000; i++) {
-            list.get(random.nextInt(list.size()));
-        }
+        System.out.printf("Tiempo desde que comenzó el programa: %dms\nTiempo para añadir 5000 valores a l2: %dms\n\n", System.currentTimeMillis() - t0, t4);
     }
 
     private static void fill(List<Integer> list) {
-
         for (int i = 0; i < 5000000; i++) {
             list.add(random.nextInt());
         }
