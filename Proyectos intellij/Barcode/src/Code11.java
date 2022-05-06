@@ -10,7 +10,6 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class Code11 {
@@ -101,7 +100,7 @@ public class Code11 {
                 }
 
                 if (c == ' ') {
-                    characterValue += (nBars < maxBars) ? "0" : "1";
+                    characterValue += (nBars < maxBars / 2 + 1) ? "0" : "1";
                     nBars = 0;
                     if (state != 4) {
                         state++;
@@ -193,24 +192,32 @@ public class Code11 {
     }
 
     private static String codeToPalitos(String str) {
-        List<Integer> values = convertToIntList(str);
+        int[][] values = convertToBidimensionalArray(str);
         String result = "";
+        int line = values.length / 2;
 
-        for (int i = 0; i < values.size(); i++) {
+        for (int i = 0; i < values[line].length; i++) {
+            int value = values[line][i];
+            if (value < 255 / 2) {
+                result += "█";
+            } else {
+                result += " ";
+            }
+        }
+
+        /*for (int i = 0; i < values.size(); i++) {
             if (values.get(i) < 255 / 2) {
                 result += " ";
             } else {
                 result += "█";
             }
-        }
+        }*/
 
         return result;
     }
 
-    private static List<Integer> convertToIntList(String str) {
-        String pixels = "";
-
-        for (int i = 0, j = 0, contador = 0; contador < 3; i++) {
+    private static int[][] convertToBidimensionalArray(String str) {
+        /*for (int i = 0, j = 0, contador = 0; contador < 3; i++) {
             char c = str.charAt(i);
             if (c == '\n') {
                 contador++;
@@ -221,22 +228,24 @@ public class Code11 {
                 pixels += str.substring(j + 1, i - 1);
                 str = str.substring(i);
             }
-        }
+        }*/
 
-        System.out.println(pixels);
+        str = str.replace("\r", "");
+        String[] rawNumbers = str.split("\n");
+        String pixels = rawNumbers[2];
+
         int pixWide = Integer.parseInt(pixels.split(" ")[0]);
         int pixTall = Integer.parseInt(pixels.split(" ")[1]);
 
-        List<Integer> rawNumbers = new ArrayList<>();
+        int[][] result = new int[pixTall][pixWide];
 
-
-        for (int i = 1; i < pixWide; i++) {
-            String value = str.split("\r\n")[i];
-            rawNumbers.add(Integer.parseInt(value));
+        for (int i = 0, pos = 6; i < result.length; i++) {
+            for (int j = 0; j < result[i].length; j++, pos += 3) {
+                result[i][j] = Integer.parseInt(rawNumbers[pos]);
+            }
         }
 
-        System.out.println(rawNumbers);
-        return rawNumbers;
+        return result;
     }
 
     // Genera imatge a partir de codi de barres

@@ -10,6 +10,6 @@ public class Main {
         System.out.println(Code11.decodeImage(UtilTests.getImageAsString("code11_0123452.ppm")));
 //        Code11.decodeImage(UtilTests.getImageAsString("code11_0123-4567.ppm"));
 
-        System.out.println("0123452");
+        System.out.println("*0123452*");
     }
 }
