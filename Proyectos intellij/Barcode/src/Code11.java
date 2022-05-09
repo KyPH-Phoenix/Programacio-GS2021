@@ -100,7 +100,11 @@ public class Code11 {
                 }
 
                 if (c == ' ') {
-                    characterValue += (nBars < maxBars / 2 + 1) ? "0" : "1";
+                    if (maxBars <= 10) {
+                        characterValue += (nBars < maxBars) ? "0" : "1";
+                    } else {
+                        characterValue += (nBars < maxBars / 2) ? "0" : "1";
+                    }
                     nBars = 0;
                     if (state != 4) {
                         state++;
