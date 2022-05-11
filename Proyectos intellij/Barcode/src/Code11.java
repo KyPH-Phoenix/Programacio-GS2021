@@ -87,7 +87,6 @@ public class Code11 {
         int state = 0;
         int nBars = 0;
         int nSpaces = 0;
-        int posArray = 0;
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
