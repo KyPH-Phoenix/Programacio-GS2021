@@ -46,17 +46,28 @@ public class Code11 {
 
     // Decodifica amb Code11
     static String decode(String s) {
-        List<String> charactersList = convertChars2binary(s);
+        int maxBars = countMaxBars(s);
         String result = "";
 
-        if (charactersList == null) return null;
+        for (int i = maxBars - 1; i > 0; i--) {
+            result = "";
+            List<String> charactersList = convertChars2binary(s, i);
 
-        for (String numCharacter : charactersList) {
-            if (decodeChar(numCharacter) == null) return null;
-            result += decodeChar(numCharacter);
+            if (charactersList == null) return null;
+
+            boolean notValid = false;
+
+            for (String numCharacter : charactersList) {
+                if (decodeChar(numCharacter) == null) notValid = true;
+                result += decodeChar(numCharacter);
+            }
+
+            if (notValid) continue;
+
+            return result;
         }
 
-        return result;
+        return null;
     }
 
     private static String decodeChar(String s) {
@@ -77,11 +88,10 @@ public class Code11 {
         };
     }
 
-    private static List<String> convertChars2binary(String s) {
+    private static List<String> convertChars2binary(String s, int minBars) {
         List<String> result = new ArrayList<>();
         String characterValue = "";
 
-        int maxBars = countMaxBars(s);
         int maxSpaces = countMaxSpaces(s);
 
         int state = 0;
@@ -90,6 +100,7 @@ public class Code11 {
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
+            if (c != ' ' && c != '█') return null;
             if (state == 0 || state == 2 || state == 4) {
                 if (c == ' ' && nBars == 0) continue;
 
@@ -99,11 +110,7 @@ public class Code11 {
                 }
 
                 if (c == ' ') {
-                    if (maxBars <= 10) {
-                        characterValue += (nBars < maxBars) ? "0" : "1";
-                    } else {
-                        characterValue += (nBars < maxBars / 2) ? "0" : "1";
-                    }
+                    characterValue += (nBars <= minBars) ? "0" : "1";
                     nBars = 0;
                     if (state != 4) {
                         state++;
@@ -133,7 +140,7 @@ public class Code11 {
         }
 
         if (s.charAt(s.length() - 1) != ' ') {
-            characterValue += (nBars < maxBars) ? "0" : "1";
+            characterValue += (nBars <= minBars) ? "0" : "1";
             result.add(characterValue);
             characterValue = "";
         }
@@ -189,15 +196,21 @@ public class Code11 {
 
     // Decodifica una imatge. La imatge ha d'estar en format "ppm"
     public static String decodeImage(String str) {
-        String symbolStr = codeToPalitos(str);
+        int[][] values = convertToBidimensionalArray(str);
 
-        return decode(symbolStr);
+        for (int i = 0; i < values.length; i++) {
+            String symbolStr = codeToPalitos(str, values, i);
+            if (decode(symbolStr) == null) continue;
+            return decode(symbolStr);
+        }
+
+        return null;
     }
 
-    private static String codeToPalitos(String str) {
-        int[][] values = convertToBidimensionalArray(str);
+    private static String codeToPalitos(String str, int[][] values, int line) {
         String result = "";
-        int line = values.length / 2;
+
+        line = values.length / 2;
 
         for (int i = 0; i < values[line].length; i++) {
             int value = values[line][i];
@@ -208,31 +221,10 @@ public class Code11 {
             }
         }
 
-        /*for (int i = 0; i < values.size(); i++) {
-            if (values.get(i) < 255 / 2) {
-                result += " ";
-            } else {
-                result += "█";
-            }
-        }*/
-
         return result;
     }
 
     private static int[][] convertToBidimensionalArray(String str) {
-        /*for (int i = 0, j = 0, contador = 0; contador < 3; i++) {
-            char c = str.charAt(i);
-            if (c == '\n') {
-                contador++;
-                if (contador == 2) j = i;
-            }
-
-            if (contador == 3) {
-                pixels += str.substring(j + 1, i - 1);
-                str = str.substring(i);
-            }
-        }*/
-
         str = str.replace("\r", "");
         String[] rawNumbers = str.split("\n");
         String pixels = rawNumbers[2];
@@ -244,7 +236,11 @@ public class Code11 {
 
         for (int i = 0, pos = 6; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++, pos += 3) {
-                result[i][j] = Integer.parseInt(rawNumbers[pos]);
+                float red = Integer.parseInt(rawNumbers[pos]);
+                float green = Integer.parseInt(rawNumbers[pos - 1]);
+                float blue = Integer.parseInt(rawNumbers[pos - 2]);
+
+                result[i][j] = (int) (0.2989 * red + 0.5870 * green + 0.1140 * blue);
             }
         }
 
