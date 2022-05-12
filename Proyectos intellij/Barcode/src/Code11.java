@@ -47,19 +47,27 @@ public class Code11 {
     // Decodifica amb Code11
     static String decode(String s) {
         int maxBars = countMaxBars(s);
-        String result = "";
 
         for (int i = maxBars - 1; i > 0; i--) {
-            result = "";
+            String result = "";
             List<String> charactersList = convertChars2binary(s, i);
 
             if (charactersList == null) return null;
 
+            String firstChar = decodeChar(charactersList.get(0));
+
+            if (firstChar == null) continue;
+            if (!firstChar.equals("*")) continue;
+
             boolean notValid = false;
 
             for (String numCharacter : charactersList) {
-                if (decodeChar(numCharacter) == null) notValid = true;
-                result += decodeChar(numCharacter);
+                String decodedChar = decodeChar(numCharacter);
+                if (decodedChar == null) {
+                    notValid = true;
+                    break;
+                }
+                result += decodedChar;
             }
 
             if (notValid) continue;
@@ -199,22 +207,63 @@ public class Code11 {
         int[][] values = convertToBidimensionalArray(str);
 
         for (int i = 0; i < values.length; i++) {
+//            System.out.println(codeToPalitos(str, values, i));
+
+        }
+
+        String result = decodeStringToResult(values, str);
+        if (result != null) return result;
+
+        String invertedStr = invert(str);
+        values = convertToBidimensionalArray(invertedStr);
+
+        result = decodeStringToResult(values, str);
+
+        return result;
+    }
+
+    private static String decodeStringToResult(int[][] values, String str) {
+        for (int i = 0; i < values.length / 2 + 1; i++) {
             String symbolStr = codeToPalitos(str, values, i);
-            if (decode(symbolStr) == null) continue;
+
+            if (decode(symbolStr) == null) {
+                symbolStr = codeToPalitos(str, values, values.length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
+                continue;
+            }
+
             return decode(symbolStr);
         }
 
         return null;
     }
 
+    private static String invert(String str) {
+        str = str.replace("\r", "");
+
+        String[] aux = str.split("\n");
+        int extraLine = (aux.length % 2 != 0) ? 1 : 0;
+
+        String result = "";
+
+        for (int i = 0; i < 4 - extraLine; i++) {
+            result += aux[i] + "\n";
+        }
+
+        for (int i = aux.length - 1; i > 3 - extraLine; i--) {
+            result += aux[i];
+            result += (i == 4 - extraLine) ? "" : "\n";
+        }
+
+        return result;
+    }
+
     private static String codeToPalitos(String str, int[][] values, int line) {
         String result = "";
 
-        line = values.length / 2;
-
         for (int i = 0; i < values[line].length; i++) {
             int value = values[line][i];
-            if (value < 255 / 2) {
+            if (value < 150) {
                 result += "█";
             } else {
                 result += " ";
@@ -226,15 +275,21 @@ public class Code11 {
 
     private static int[][] convertToBidimensionalArray(String str) {
         str = str.replace("\r", "");
+
         String[] rawNumbers = str.split("\n");
-        String pixels = rawNumbers[2];
+
+        int extraLine = (rawNumbers.length % 2 != 0) ? 1 : 0;
+
+        String pixels = rawNumbers[2 - extraLine];
 
         int pixWide = Integer.parseInt(pixels.split(" ")[0]);
         int pixTall = Integer.parseInt(pixels.split(" ")[1]);
 
+        System.out.println(pixWide * pixTall);
+
         int[][] result = new int[pixTall][pixWide];
 
-        for (int i = 0, pos = 6; i < result.length; i++) {
+        for (int i = 0, pos = 6 - extraLine; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++, pos += 3) {
                 float red = Integer.parseInt(rawNumbers[pos]);
                 float green = Integer.parseInt(rawNumbers[pos - 1]);
