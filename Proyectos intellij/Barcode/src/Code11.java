@@ -207,7 +207,7 @@ public class Code11 {
         int[][] values = convertToBidimensionalArray(str);
 
         for (int i = 0; i < values.length; i++) {
-//            System.out.println(codeToPalitos(str, values, i));
+            System.out.println(codeToPalitos(str, values, i));
 
         }
 
