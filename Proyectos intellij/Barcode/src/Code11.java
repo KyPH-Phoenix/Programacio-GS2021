@@ -9,7 +9,6 @@
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Code11 {
@@ -274,8 +273,8 @@ public class Code11 {
     }
 
     private static int[][] convertToBidimensionalArray(String str) {
-        str = str.replace("\r", "");
 
+        str = str.replace("\r", "");
         String[] rawNumbers = str.split("\n");
 
         int extraLine = (rawNumbers.length % 2 != 0) ? 1 : 0;
@@ -284,8 +283,6 @@ public class Code11 {
 
         int pixWide = Integer.parseInt(pixels.split(" ")[0]);
         int pixTall = Integer.parseInt(pixels.split(" ")[1]);
-
-        System.out.println(pixWide * pixTall);
 
         int[][] result = new int[pixTall][pixWide];
 
@@ -305,8 +302,86 @@ public class Code11 {
     // Genera imatge a partir de codi de barres
     // Alçada: 100px
     // Marges: vertical 4px, horizontal 8px
+    // Gruixada: 10px
+    // Prima: 3px
     public static String generateImage(String s) {
-        System.out.println(s);
-        return "";
+        String line = "";
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            line += generatePixels(c);
+
+            if (i < s.length() - 1) line += "   ";
+        }
+
+        int width = line.length() + 16;
+        int heigth = 108;
+
+        String result = "P3\n" + width + " " + heigth + "\n255\n";
+
+        result += addVerticalMargin(width);
+
+        String codedLine = codedLine(line);
+
+        for (int i = 0; i < 100; i++) {
+            result += addHorizontalMargin();
+            result += codedLine;
+            result += addHorizontalMargin();
+        }
+
+        result += addVerticalMargin(width);
+        result = result.substring(0, result.length() - 1);
+
+        return result;
+    }
+
+    private static String codedLine(String line) {
+        String result = "";
+
+        for (char c : line.toCharArray()) {
+            result += (c == ' ') ? "255\n255\n255\n" : "0\n0\n0\n";
+        }
+
+        return result;
+    }
+
+    private static String addHorizontalMargin() {
+        String result = "";
+
+        for (int i = 0; i < 8; i++) {
+            result += "255\n255\n255\n";
+        }
+
+        return result;
+    }
+
+    private static String addVerticalMargin(int width) {
+        String result = "";
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < width; j++) {
+                result += "255\n255\n255\n";
+            }
+        }
+
+        return result;
+    }
+
+    public static String generatePixels(char c) {
+        return switch (c) {
+            case '*' -> "███   ██████████          ███";
+            case '0' -> "███   ███   ██████████";
+            case '1' -> "██████████   ███   ██████████";
+            case '2' -> "███          ███   ██████████";
+            case '3' -> "██████████          ███   ███";
+            case '4' -> "███   ██████████   ██████████";
+            case '5' -> "██████████   ██████████   ███";
+            case '6' -> "███          ██████████   ███";
+            case '7' -> "███   ███          ██████████";
+            case '8' -> "██████████   ███          ███";
+            case '9' -> "██████████   ███   ███";
+            case '-' -> "███   ██████████   ███";
+            default -> "";
+        };
     }
 }
