@@ -205,26 +205,28 @@ public class Code11 {
     public static String decodeImage(String str) {
         int[][] values = convertToBidimensionalArray(str);
 
-        String result = decodeStringToResult(values);
-        System.out.println(result);
-        if (result != null && result.length() >= 3) return result;
+        for (int i = 0; i < values.length; i++) {
+//            System.out.println(codeToPalitos(str, values, i));
+
+        }
+
+        String result = decodeStringToResult(values, str);
+        if (result != null) return result;
 
         String invertedStr = invert(str);
         values = convertToBidimensionalArray(invertedStr);
 
-        result = decodeStringToResult(values);
-        System.out.println(result);
-        if (result.length() >= 3) return result;
+        result = decodeStringToResult(values, str);
 
-        return "alo";
+        return result;
     }
 
-    private static String decodeStringToResult(int[][] values) {
+    private static String decodeStringToResult(int[][] values, String str) {
         for (int i = 0; i < values.length / 2 + 1; i++) {
-            String symbolStr = codeToPalitos(values, i);
+            String symbolStr = codeToPalitos(str, values, i);
 
             if (decode(symbolStr) == null) {
-                symbolStr = codeToPalitos(values, values.length - i - 1);
+                symbolStr = codeToPalitos(str, values, values.length - i - 1);
                 if (decode(symbolStr) != null) return decode(symbolStr);
                 continue;
             }
@@ -255,7 +257,7 @@ public class Code11 {
         return result;
     }
 
-    private static String codeToPalitos(int[][] values, int line) {
+    private static String codeToPalitos(String str, int[][] values, int line) {
         String result = "";
 
         for (int i = 0; i < values[line].length; i++) {
@@ -271,6 +273,7 @@ public class Code11 {
     }
 
     private static int[][] convertToBidimensionalArray(String str) {
+
         str = str.replace("\r", "");
         String[] rawNumbers = str.split("\n");
 
