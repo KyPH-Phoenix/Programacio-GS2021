@@ -2,7 +2,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class Code93Test {
+public class    Code93Test {
     @Test
     public void encodeTest1() {
         assertEquals("█ █ ████ ██ █ █   ██ █ █   ██  █ ██ █ █ ████ █",
