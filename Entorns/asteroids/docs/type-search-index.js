@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"App"},{"p":"com.esliceu.service","l":"LocalService"},{"p":"com.esliceu.model","l":"Meteorit"},{"p":"com.esliceu.controller","l":"MeteoritsController"},{"p":"com.esliceu.service","l":"MeteroidsService"}];updateSearchResults();

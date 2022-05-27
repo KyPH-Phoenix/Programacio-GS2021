@@ -1,10 +1,10 @@
-public class Image {
+public class Image11 {
     private int height;
     private int width;
     private String[][] imageArray;
     private String value;
 
-    public Image(String str) {
+    public Image11(String str) {
         this.imageArray = convertToBidimensionalArray(str);
         this.value = decodeImage();
     }

@@ -1,9 +1,6 @@
-
-import static org.junit.Assert.*;
-
 public class Main {
     public static void main(String[] args) {
-        Image i = new Image(UtilTests.getImageAsString("code11_446688120.ppm"));
+        Image11 i = new Image11(UtilTests.getImageAsString("code11_446688120.ppm"));
         System.out.println(i);
 
         Code11.decode("█ ██  █ █ █ ██ █ ██  █");
