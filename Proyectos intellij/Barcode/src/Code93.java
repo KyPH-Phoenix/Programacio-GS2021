@@ -17,7 +17,35 @@ public class Code93 {
             char c = str.charAt(i);
             result += encodeChar(c);
         }
-        
+
+        System.out.println(result);
+        return convertToPalitos(result);
+    }
+
+    private static String convertToPalitos(String s) {
+        String result = "";
+        int i = 0;
+        while (i < s.length()) {
+            int n = Integer.parseInt("" + s.charAt(i));
+
+            for (int j = 0; j < n; j++) {
+                result += "█";
+            }
+
+            i++;
+
+            if (i == s.length()) break;
+
+            n = Integer.parseInt("" + s.charAt(i));
+
+            for (int j = 0; j < n; j++) {
+                result += " ";
+            }
+            i++;
+        }
+
+        result += "█";
+
         return result;
     }
 
@@ -26,14 +54,17 @@ public class Code93 {
 
         for (int i = 0, j = str.length(); i < str.length(); i++, j--) {
             char c = str.charAt(i);
-            total += getValueOf(c) * j;
+            int value = getValueOf(c) * j;
+            total += value;
         }
 
-        return getCharOf(total);
+        return getCharOf(total % 47);
     }
 
     private static int getValueOf(char c) {
-        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*";
+        if (c == '*') return 47;
+
+        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
 
         for (int i = 0; i < characters.length(); i++) {
             if (c == characters.charAt(i)) return i;
@@ -52,8 +83,8 @@ public class Code93 {
         String[] encodedChars = {"131112", "111213", "111312", "111411", "121113", "121212", "121311", "111114",
                 "131211", "141111", "211113", "211212", "211311", "221112", "221211", "231111", "112113", "112212",
                 "112311", "122112", "132111", "111123", "111222", "111321", "121122", "131121", "212112", "212211",
-                "211221", "221121", "222111", "112122", "112221", "122121", "123111", "121131", "311112", "311211",
-                "321111", "112131", "113121", "211131", "121221", "312111", "311121", "122211", "111141",};
+                "211122", "211221", "221121", "222111", "112122", "112221", "122121", "123111", "121131", "311112",
+                "311211", "321111", "112131", "113121", "211131", "121221", "312111", "311121", "122211", "111141"};
 
         return encodedChars[getValueOf(c)];
     }
@@ -87,6 +118,7 @@ public class Code93 {
         P	"131121",	100010110
         Q	"212112",	110110100
         R	"212211",	110110010
+        S	"211122",	110101100
         T	"211221",	110100110
         U	"221121",	110010110
         V	"222111",	110011010
