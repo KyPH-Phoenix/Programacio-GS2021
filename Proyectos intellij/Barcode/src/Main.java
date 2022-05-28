@@ -24,16 +24,12 @@ public class Main {
         System.out.println(s.length() == ar.length);
         System.out.println(n1);
 
-        for (int i = 0, j = ar.length; i < ar.length; i++, j--) {
+        for (int i = ar.length - 1, j = 1; i >= 0; i--, j++) {
             n2 += ar[i] * j;
-            System.out.println((ar[i] * j) / 47);
+            if (j == 20) j = 0;
         }
 
-        System.out.println(n2);
+        System.out.println(n2 % 47);
 
-        System.out.println(ar[10]);
-
-        System.out.println((n2 - 10) % 47);
-        System.out.println((n2 - 42) % 47);
     }
 }
