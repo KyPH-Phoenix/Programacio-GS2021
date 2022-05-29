@@ -204,15 +204,41 @@ public class Code11 {
 
     // Decodifica una imatge. La imatge ha d'estar en format "ppm"
     public static String decodeImage(String str) {
-        int[][] values = convertToBidimensionalArray(str);
+        Image image = new Image(str);
 
-        String result = decodeStringToResult(values, str);
+        String result = readHorizontal(image.getImageArray());
         if (result != null) return result;
 
         String invertedStr = invert(str);
-        values = convertToBidimensionalArray(invertedStr);
+        int[][] values = convertToBidimensionalArray(invertedStr);
 
         result = decodeStringToResult(values, str);
+
+        return result;
+    }
+
+    private static String readHorizontal(String[][] imageArray) {
+        for (int i = 0; i < imageArray.length / 2 + 1; i++) {
+            String symbolStr = rowToString(imageArray, i);
+
+            if (Code11.decode(symbolStr) == null) {
+                symbolStr = rowToString(imageArray, imageArray.length - i - 1);
+                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+                continue;
+            }
+
+            return Code11.decode(symbolStr);
+        }
+
+        return null;
+    }
+
+    private static String rowToString(String[][] imageArray, int row) {
+        String result = "";
+
+        for (int i = 0; i < imageArray[row].length; i++) {
+            result += imageArray[row][i];
+        }
 
         return result;
     }

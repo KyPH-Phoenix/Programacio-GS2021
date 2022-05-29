@@ -1,18 +1,25 @@
-public class Image11 {
+public class Image {
     private int height;
     private int width;
     private String[][] imageArray;
     private String value;
 
-    public Image11(String str) {
+    public Image(String str) {
         this.imageArray = convertToBidimensionalArray(str);
-        this.value = decodeImage();
     }
 
-    private String decodeImage() {
-
-        return null;
+    public String[][] getImageArray() {
+        return imageArray;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 
     private String[][] convertToBidimensionalArray(String str) {
         str = str.replace("\r", "");

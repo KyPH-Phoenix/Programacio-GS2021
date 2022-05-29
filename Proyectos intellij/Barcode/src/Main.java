@@ -1,35 +1,78 @@
+import static org.junit.Assert.assertEquals;
+
 public class Main {
     public static void main(String[] args) {
-//        Image11 i = new Image11(UtilTests.getImageAsString("code11_446688120.ppm"));
-//        System.out.println(i);
-//
-//        Code11.decode("█ ██  █ █ █ ██ █ ██  █");
-//
-//        Code11.decode("█ ███  ██ █ █ █ █ ███ █ ███   █");
-//
-//        Code11.decodeImage(UtilTests.getImageAsString("code11_446688120.ppm"));
-//
-////        System.out.println(Code11.decodeImage(UtilTests.getImageAsString("code11_0123452.ppm")));
-////          Code11.decodeImage(UtilTests.getImageAsString("code11_0123-4567.ppm"));
-//
-//        System.out.println("*0123452*");
-//
-        String s = "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
-        int[] ar = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-                27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42};
+        // Horizontal
+        Image i = new Image(UtilTests.getImageAsString("code11_446688120.ppm"));
 
-        int n1 = 13289;
-        int n2 = 0;
+        String s = readHorizontal(i.getImageArray());
+        System.out.println(s);
 
-        System.out.println(s.length() == ar.length);
-        System.out.println(n1);
+        // Vertical
+        i = new Image(UtilTests.getImageAsString("code11_95612-7.ppm"));
+        s = readVertical(i.getImageArray());
 
-        for (int i = ar.length - 1, j = 1; i >= 0; i--, j++) {
-            n2 += ar[i] * j;
-            if (j == 20) j = 0;
+        String expected = "*95612-7*";
+        System.out.println("Expected: " + expected + " Actual: " + s);
+
+        i = new Image(UtilTests.getImageAsString("code11_2226-78-984376.ppm"));
+        s = readVertical(i.getImageArray());
+        System.out.println(i);
+
+        expected = "*2226-78-984376*";
+        System.out.println("Expected: " + expected + " Actual: " + s);
+    }
+
+    private static String readHorizontal(String[][] imageArray) {
+        for (int i = 0; i < imageArray.length / 2 + 1; i++) {
+            String symbolStr = rowToString(imageArray, i);
+
+            if (Code11.decode(symbolStr) == null) {
+                symbolStr = rowToString(imageArray, imageArray.length - i - 1);
+                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+                continue;
+            }
+
+            return Code11.decode(symbolStr);
         }
 
-        System.out.println(n2 % 47);
-
+        return null;
     }
+
+    private static String rowToString(String[][] imageArray, int row) {
+        String result = "";
+
+        for (int i = 0; i < imageArray[row].length; i++) {
+            result += imageArray[row][i];
+        }
+
+        return result;
+    }
+
+    private static String readVertical(String[][] imageArray) {
+        for (int i = 0; i < imageArray[0].length; i++) {
+            String symbolStr = columnToString(imageArray, i);
+
+            if (Code11.decode(symbolStr) == null) {
+                symbolStr = columnToString(imageArray, imageArray[i].length - i - 1);
+                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+                continue;
+            }
+
+            return Code11.decode(symbolStr);
+        }
+
+        return null;
+    }
+
+    private static String columnToString(String[][] imageArray, int column) {
+        String result = "";
+
+        for (int i = 0; i < imageArray.length; i++) {
+            result += imageArray[i][column];
+        }
+
+        return result;
+    }
+
 }
