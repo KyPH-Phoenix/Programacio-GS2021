@@ -205,14 +205,12 @@ public class Code11 {
     // Decodifica una imatge. La imatge ha d'estar en format "ppm"
     public static String decodeImage(String str) {
         Image image = new Image(str);
+        String[][] imageArray = image.getImageArray();
 
-        String result = readHorizontal(image.getImageArray());
+        String result = readHorizontal(imageArray);
         if (result != null) return result;
 
-        String invertedStr = invert(str);
-        int[][] values = convertToBidimensionalArray(invertedStr);
-
-        result = decodeStringToResult(values, str);
+        result = readVertical(imageArray);
 
         return result;
     }
@@ -223,6 +221,18 @@ public class Code11 {
 
             if (Code11.decode(symbolStr) == null) {
                 symbolStr = rowToString(imageArray, imageArray.length - i - 1);
+                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+                continue;
+            }
+
+            return Code11.decode(symbolStr);
+        }
+
+        for (int i = 0; i < imageArray.length / 2 + 1; i++) {
+            String symbolStr = ReverseRowToString(imageArray, i);
+
+            if (Code11.decode(symbolStr) == null) {
+                symbolStr = ReverseRowToString(imageArray, imageArray.length - i - 1);
                 if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
                 continue;
             }
@@ -243,37 +253,59 @@ public class Code11 {
         return result;
     }
 
-    private static String decodeStringToResult(int[][] values, String str) {
-        for (int i = 0; i < values.length / 2 + 1; i++) {
-            String symbolStr = codeToPalitos(str, values, i);
+    private static String ReverseRowToString(String[][] imageArray, int row) {
+        String result = "";
 
-            if (decode(symbolStr) == null) {
-                symbolStr = codeToPalitos(str, values, values.length - i - 1);
-                if (decode(symbolStr) != null) return decode(symbolStr);
+        for (int i = imageArray[row].length - 1; i >= 0; i--) {
+            result += imageArray[row][i];
+        }
+
+        return result;
+    }
+
+    private static String readVertical(String[][] imageArray) {
+        for (int i = 0; i < imageArray[0].length; i++) {
+            String symbolStr = columnToString(imageArray, i);
+
+            if (Code11.decode(symbolStr) == null) {
+                symbolStr = columnToString(imageArray, imageArray[i].length - i - 1);
+                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
                 continue;
             }
 
-            return decode(symbolStr);
+            return Code11.decode(symbolStr);
+        }
+
+        for (int i = 0; i < imageArray[0].length; i++) {
+            String symbolStr = ReverseColumnToString(imageArray, i);
+
+            if (Code11.decode(symbolStr) == null) {
+                symbolStr = ReverseColumnToString(imageArray, imageArray[i].length - i - 1);
+                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+                continue;
+            }
+
+            return Code11.decode(symbolStr);
         }
 
         return null;
     }
 
-    private static String invert(String str) {
-        str = str.replace("\r", "");
-
-        String[] aux = str.split("\n");
-        int extraLine = (aux.length % 2 != 0) ? 1 : 0;
-
+    private static String columnToString(String[][] imageArray, int column) {
         String result = "";
 
-        for (int i = 0; i < 4 - extraLine; i++) {
-            result += aux[i] + "\n";
+        for (int i = 0; i < imageArray.length; i++) {
+            result += imageArray[i][column];
         }
 
-        for (int i = aux.length - 1; i > 3 - extraLine; i--) {
-            result += aux[i];
-            result += (i == 4 - extraLine) ? "" : "\n";
+        return result;
+    }
+
+    private static String ReverseColumnToString(String[][] imageArray, int column) {
+        String result = "";
+
+        for (int i = imageArray.length - 1; i >= 0; i--) {
+            result += imageArray[i][column];
         }
 
         return result;
@@ -288,35 +320,6 @@ public class Code11 {
                 result += "█";
             } else {
                 result += " ";
-            }
-        }
-
-        return result;
-    }
-
-    private static int[][] convertToBidimensionalArray(String str) {
-        str = str.replace("\r", "");
-
-        String[] rawNumbers = str.split("\n");
-
-        int extraLine = (rawNumbers.length % 2 != 0) ? 1 : 0;
-
-        String pixels = rawNumbers[2 - extraLine];
-
-        int pixWide = Integer.parseInt(pixels.split(" ")[0]);
-        int pixTall = Integer.parseInt(pixels.split(" ")[1]);
-
-        System.out.println(pixWide * pixTall);
-
-        int[][] result = new int[pixTall][pixWide];
-
-        for (int i = 0, pos = 6 - extraLine; i < result.length; i++) {
-            for (int j = 0; j < result[i].length; j++, pos += 3) {
-                float red = Integer.parseInt(rawNumbers[pos]);
-                float green = Integer.parseInt(rawNumbers[pos - 1]);
-                float blue = Integer.parseInt(rawNumbers[pos - 2]);
-
-                result[i][j] = (int) (0.2989 * red + 0.5870 * green + 0.1140 * blue);
             }
         }
 

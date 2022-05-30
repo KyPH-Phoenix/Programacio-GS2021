@@ -7,6 +7,9 @@ public class Code93 {
         char chk1 = getChecksum(str, 20);
         char chk2 = getChecksum(str + chk1, 15);
 
+        System.out.println(chk1);
+        System.out.println(chk2);
+
         str = "*" + str + chk1 + chk2 + "*";
         String result = "";
 
