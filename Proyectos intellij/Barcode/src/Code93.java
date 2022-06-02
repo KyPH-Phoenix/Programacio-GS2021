@@ -7,6 +7,8 @@ public class Code93 {
 
     // Codifica emprant Code93
     static String encode(String str) {
+        str = processSpecialChars(str);
+
         char chk1 = getChecksum(str, 20);
         char chk2 = getChecksum(str + chk1, 15);
 
@@ -19,6 +21,22 @@ public class Code93 {
         }
 
         return convertToPalitos(result);
+    }
+
+    private static String processSpecialChars(String str) {
+        String lowerABC = "abcdefghijklmnopqrstuvwxyz";
+
+        for (char c : str.toCharArray()) {
+            if (lowerABC.contains("" + c)) {
+                str = str.replace("" + c, "<" + (char) (c - 32));
+            }
+
+            if (c == ',') str = str.replace("" + c, "@L");
+
+            if (c == '*') str = str.replace("" + c, "@J");
+        }
+
+        return str;
     }
 
     private static String convertToPalitos(String s) {
@@ -62,9 +80,9 @@ public class Code93 {
     private static int getValueOf(char c) {
         // € = ($)
         // > = (%)
-        // Ç = (/)
+        // @ = (/)
         // < = (+)
-        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%€>Ç<*";
+        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%€>@<*";
 
         for (int i = 0; i < characters.length(); i++) {
             if (c == characters.charAt(i)) return i;
@@ -97,6 +115,8 @@ public class Code93 {
 
     // Decodifica emprant Code93
     static String decode(String str) {
+        if (str.charAt(str.length() - 1) != '█') return null;
+
         List<String> values = symbolsToNumbers(str);
         String result = "";
 
@@ -104,21 +124,48 @@ public class Code93 {
             result += getCharOfString(values.get(i));
         }
 
+        if (!checkChecksums(result, values)) return null;
+
+        result = revertSpecialChars(result);
+
         return result;
     }
 
-    private static String getCharOfString(String value) {
-        for (int i = 0; i < encodedChars.length; i++) {
-            if (value.equals(encodedChars[i])) return "" + getCharFromValue(i);
+    private static String revertSpecialChars(String result) {
+        result = result.replace("@L", ",");
+        result = result.replace("@J", "*");
+
+        String upperABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        for (char c : upperABC.toCharArray()) {
+            result = result.replace("<" + c, "" + (char) (c + 32));
         }
 
-        return null;
+        return result;
+    }
+
+    private static boolean checkChecksums(String result, List<String> values) {
+        char chk1 = getCharOfString(values.get(values.size() - 3));
+        char chk2 = getCharOfString(values.get(values.size() - 2));
+
+        if (chk1 != getChecksum(result, 20)) return false;
+        return chk2 == getChecksum(result + chk1, 15);
+    }
+
+    private static char getCharOfString(String value) {
+        for (int i = 0; i < encodedChars.length; i++) {
+            if (value.equals(encodedChars[i])) return getCharFromValue(i);
+        }
+
+        return '@';
     }
 
     private static List<String> symbolsToNumbers(String str) {
         List<String> result = new ArrayList<>();
         int smallestSize = countSmallerBar(str);
         int state = 1;
+
+//        str = removeBeginAndEndSpaces(str);
 
         String value = "";
 
@@ -150,7 +197,7 @@ public class Code93 {
                         value = "";
 
                         state = 1;
-                    //// Si no simplemente suma 1 al estado
+                        //// Si no simplemente suma 1 al estado
                     } else {
                         state++;
                     }
@@ -160,7 +207,31 @@ public class Code93 {
             }
         }
 
+//        if (state != 1) return null;
+
         return result;
+    }
+
+    private static String removeBeginAndEndSpaces(String str) {
+        int count1 = 0;
+        int count2 = 0;
+        char c;
+
+        do {
+            c = str.charAt(count1);
+            if (c == ' ') count1++;
+        } while (c == ' ');
+
+        do {
+            c = str.charAt(count2);
+            if (c == ' ') count2++;
+        } while (c == ' ');
+
+        str = str.substring(count1, str.length() - count2 + 1);
+
+        System.out.println(str);
+
+        return str;
     }
 
     private static int countSmallerBar(String str) {
@@ -186,10 +257,42 @@ public class Code93 {
     // Decodifica una imatge. La imatge ha d'estar en format "ppm"
     public static String decodeImage(String str) {
         Image image = new Image(str);
-
         System.out.println(image);
+        String result = "";
 
-        return "";
+        result = readHorizontal(image);
+
+        return result;
+    }
+
+    private static String readHorizontal(Image image) {
+        String[][] imageArray = image.getImageArray();
+
+        for (int i = 0; i < imageArray.length / 2 + 1; i++) {
+            String symbolStr = image.getRow(i);
+
+            if (decode(symbolStr) == null) {
+                symbolStr = image.getRow(imageArray.length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
+                continue;
+            }
+
+            return decode(symbolStr);
+        }
+
+        for (int i = 0; i < imageArray.length / 2 + 1; i++) {
+            String symbolStr = image.getReverseRow(i);
+
+            if (decode(symbolStr) == null) {
+                symbolStr = image.getReverseRow(imageArray.length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
+                continue;
+            }
+
+            return decode(symbolStr);
+        }
+
+        return null;
     }
 
     // Genera imatge a partir de barcode code93

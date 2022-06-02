@@ -9,7 +9,6 @@
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Code11 {
@@ -20,7 +19,7 @@ public class Code11 {
 
         for (int i = 0; i < s.length(); i++) {
             result += encodeChar(s.charAt(i));
-            if (i < s.length() - 1 ) result += " ";
+            if (i < s.length() - 1) result += " ";
         }
 
         return result;
@@ -205,125 +204,77 @@ public class Code11 {
     // Decodifica una imatge. La imatge ha d'estar en format "ppm"
     public static String decodeImage(String str) {
         Image image = new Image(str);
+        String result = readHorizontal(image);
+
+        if (result != null) {
+            image.setValue(result);
+            return image.getValue();
+        }
+
+        result = readVertical(image);
+        image.setValue(result);
+
+        return image.getValue();
+    }
+
+    private static String readHorizontal(Image image) {
         String[][] imageArray = image.getImageArray();
 
-        String result = readHorizontal(imageArray);
-        if (result != null) return result;
-
-        result = readVertical(imageArray);
-
-        return result;
-    }
-
-    private static String readHorizontal(String[][] imageArray) {
         for (int i = 0; i < imageArray.length / 2 + 1; i++) {
-            String symbolStr = rowToString(imageArray, i);
+            String symbolStr = image.getRow(i);
 
-            if (Code11.decode(symbolStr) == null) {
-                symbolStr = rowToString(imageArray, imageArray.length - i - 1);
-                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+            if (decode(symbolStr) == null) {
+                symbolStr = image.getRow(imageArray.length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
                 continue;
             }
 
-            return Code11.decode(symbolStr);
+            return decode(symbolStr);
         }
 
         for (int i = 0; i < imageArray.length / 2 + 1; i++) {
-            String symbolStr = ReverseRowToString(imageArray, i);
+            String symbolStr = image.getReverseRow(i);
 
-            if (Code11.decode(symbolStr) == null) {
-                symbolStr = ReverseRowToString(imageArray, imageArray.length - i - 1);
-                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+            if (decode(symbolStr) == null) {
+                symbolStr = image.getReverseRow(imageArray.length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
                 continue;
             }
 
-            return Code11.decode(symbolStr);
+            return decode(symbolStr);
         }
 
         return null;
     }
 
-    private static String rowToString(String[][] imageArray, int row) {
-        String result = "";
+    private static String readVertical(Image image) {
+        String[][] imageArray = image.getImageArray();
 
-        for (int i = 0; i < imageArray[row].length; i++) {
-            result += imageArray[row][i];
-        }
-
-        return result;
-    }
-
-    private static String ReverseRowToString(String[][] imageArray, int row) {
-        String result = "";
-
-        for (int i = imageArray[row].length - 1; i >= 0; i--) {
-            result += imageArray[row][i];
-        }
-
-        return result;
-    }
-
-    private static String readVertical(String[][] imageArray) {
         for (int i = 0; i < imageArray[0].length; i++) {
-            String symbolStr = columnToString(imageArray, i);
+            String symbolStr = image.getColumn(i);
 
-            if (Code11.decode(symbolStr) == null) {
-                symbolStr = columnToString(imageArray, imageArray[i].length - i - 1);
-                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+            if (decode(symbolStr) == null) {
+                symbolStr = image.getColumn(imageArray[i].length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
                 continue;
             }
 
-            return Code11.decode(symbolStr);
+            return decode(symbolStr);
         }
 
         for (int i = 0; i < imageArray[0].length; i++) {
-            String symbolStr = ReverseColumnToString(imageArray, i);
+            String symbolStr = image.getReverseColumn(i);
 
-            if (Code11.decode(symbolStr) == null) {
-                symbolStr = ReverseColumnToString(imageArray, imageArray[i].length - i - 1);
-                if (Code11.decode(symbolStr) != null) return Code11.decode(symbolStr);
+            if (decode(symbolStr) == null) {
+                symbolStr = image.getReverseColumn(imageArray[i].length - i - 1);
+                if (decode(symbolStr) != null) return decode(symbolStr);
                 continue;
             }
 
-            return Code11.decode(symbolStr);
+            return decode(symbolStr);
         }
 
         return null;
-    }
-
-    private static String columnToString(String[][] imageArray, int column) {
-        String result = "";
-
-        for (int i = 0; i < imageArray.length; i++) {
-            result += imageArray[i][column];
-        }
-
-        return result;
-    }
-
-    private static String ReverseColumnToString(String[][] imageArray, int column) {
-        String result = "";
-
-        for (int i = imageArray.length - 1; i >= 0; i--) {
-            result += imageArray[i][column];
-        }
-
-        return result;
-    }
-
-    private static String codeToPalitos(String str, int[][] values, int line) {
-        String result = "";
-
-        for (int i = 0; i < values[line].length; i++) {
-            int value = values[line][i];
-            if (value < 150) {
-                result += "█";
-            } else {
-                result += " ";
-            }
-        }
-
-        return result;
     }
 
     // Genera imatge a partir de codi de barres

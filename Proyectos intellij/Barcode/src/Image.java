@@ -15,7 +15,6 @@ public class Image {
     public String getValue() {
         return value;
     }
-
     public void setValue(String value) {
         this.value = value;
     }
@@ -50,6 +49,46 @@ public class Image {
 
                 result[i][j] = (grayscale > 150) ? " " : "█";
             }
+        }
+
+        return result;
+    }
+
+    public String getRow(int row) {
+        String result = "";
+
+        for (int i = 0; i < imageArray[row].length; i++) {
+            result += imageArray[row][i];
+        }
+
+        return result;
+    }
+
+    public String getReverseRow(int row) {
+        String result = "";
+
+        for (int i = imageArray[row].length - 1; i >= 0; i--) {
+            result += imageArray[row][i];
+        }
+
+        return result;
+    }
+
+    public String getColumn(int column) {
+        String result = "";
+
+        for (int i = 0; i < imageArray.length; i++) {
+            result += imageArray[i][column];
+        }
+
+        return result;
+    }
+
+    public String getReverseColumn(int column) {
+        String result = "";
+
+        for (int i = imageArray.length - 1; i >= 0; i--) {
+            result += imageArray[i][column];
         }
 
         return result;
