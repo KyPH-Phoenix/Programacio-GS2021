@@ -1,14 +1,14 @@
 // https://en.wikipedia.org/wiki/Code_93
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Code93 {
 
     // Codifica emprant Code93
     static String encode(String str) {
         char chk1 = getChecksum(str, 20);
         char chk2 = getChecksum(str + chk1, 15);
-
-        System.out.println(chk1);
-        System.out.println(chk2);
 
         str = "*" + str + chk1 + chk2 + "*";
         String result = "";
@@ -56,7 +56,7 @@ public class Code93 {
             if (j == resetNumber) j = 0;
         }
 
-        return getCharOf(total % 47);
+        return getCharFromValue(total % 47);
     }
 
     private static int getValueOf(char c) {
@@ -73,7 +73,7 @@ public class Code93 {
         return -1;
     }
 
-    private static char getCharOf(int n) {
+    private static char getCharFromValue(int n) {
         // € = ($)
         // > = (%)
         // Ç = (/)
@@ -83,23 +83,112 @@ public class Code93 {
         return characters.charAt(n);
     }
 
-    private static String encodeChar(char c) {
-        String[] encodedChars = {"131112", "111213", "111312", "111411", "121113", "121212", "121311", "111114",
-                "131211", "141111", "211113", "211212", "211311", "221112", "221211", "231111", "112113", "112212",
-                "112311", "122112", "132111", "111123", "111222", "111321", "121122", "131121", "212112", "212211",
-                "211122", "211221", "221121", "222111", "112122", "112221", "122121", "123111", "121131", "311112",
-                "311211", "321111", "112131", "113121", "211131", "121221", "312111", "311121", "122211", "111141"};
+    // Este array es estatico porque se usa en mas de una funcion.
+    final static String[] encodedChars = {"131112", "111213", "111312", "111411", "121113", "121212", "121311", "111114",
+            "131211", "141111", "211113", "211212", "211311", "221112", "221211", "231111", "112113", "112212",
+            "112311", "122112", "132111", "111123", "111222", "111321", "121122", "131121", "212112", "212211",
+            "211122", "211221", "221121", "222111", "112122", "112221", "122121", "123111", "121131", "311112",
+            "311211", "321111", "112131", "113121", "211131", "121221", "312111", "311121", "122211", "111141"};
 
+
+    private static String encodeChar(char c) {
         return encodedChars[getValueOf(c)];
     }
 
     // Decodifica emprant Code93
     static String decode(String str) {
-        return "";
+        List<String> values = symbolsToNumbers(str);
+        String result = "";
+
+        for (int i = 1; i < values.size() - 3; i++) {
+            result += getCharOfString(values.get(i));
+        }
+
+        return result;
+    }
+
+    private static String getCharOfString(String value) {
+        for (int i = 0; i < encodedChars.length; i++) {
+            if (value.equals(encodedChars[i])) return "" + getCharFromValue(i);
+        }
+
+        return null;
+    }
+
+    private static List<String> symbolsToNumbers(String str) {
+        List<String> result = new ArrayList<>();
+        int smallestSize = countSmallerBar(str);
+        int state = 1;
+
+        String value = "";
+
+        for (int i = 0, count = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+
+            if (state % 2 == 1) {
+                if (c == '█') {
+                    count++;
+                } else {
+                    value += count / smallestSize;
+
+                    // Reset variables
+                    state++;
+                    count = 0;
+                }
+            }
+
+            if (state % 2 == 0) {
+                if (c == ' ') {
+                    count++;
+                } else {
+                    value += count / smallestSize;
+
+                    // Reset Variables
+                    //// Si el estado = 6 guarda el valor y resetea el estado y la variable "value";
+                    if (state == 6) {
+                        result.add(value);
+                        value = "";
+
+                        state = 1;
+                    //// Si no simplemente suma 1 al estado
+                    } else {
+                        state++;
+                    }
+                    count = 0;
+                    i--;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static int countSmallerBar(String str) {
+        int min = 1000;
+        int count = 0;
+        char lastChar = str.charAt(0);
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == lastChar) {
+                count++;
+            } else {
+                if (count < min) min = count;
+                lastChar = c;
+                count = 0;
+                i--;
+            }
+        }
+
+        return min;
     }
 
     // Decodifica una imatge. La imatge ha d'estar en format "ppm"
     public static String decodeImage(String str) {
+        Image image = new Image(str);
+
+        System.out.println(image);
+
         return "";
     }
 
