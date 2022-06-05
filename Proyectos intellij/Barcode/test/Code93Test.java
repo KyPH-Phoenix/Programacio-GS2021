@@ -57,9 +57,9 @@ public class Code93Test {
                 Code93.decodeImage(
                         UtilTests.getImageAsString("code93_A.ppm")));
 
-//        assertEquals("HELLO",
-//                Code93.decodeImage(
-//                        UtilTests.getImageAsString("code93_HELLO.ppm")));
+        assertEquals("HELLO",
+                Code93.decodeImage(
+                        UtilTests.getImageAsString("code93_HELLO.ppm")));
 
         assertEquals("LICEU123",
                 Code93.decodeImage(
