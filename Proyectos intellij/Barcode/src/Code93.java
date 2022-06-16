@@ -401,4 +401,8 @@ public class Code93 {
 
         return result;
     }
+
+    static void cacaCaca(String result, String line, int i, int[] ints) {
+
+    }
 }
